@@ -1,0 +1,127 @@
+<!DOCTYPE html>
+<html lang="ar" dir="rtl">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>إدارة الموظفين - المسميات الوظيفية</title>
+    <link rel="stylesheet" href="css/styles.css">
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.0.0/css/all.min.css">
+</head>
+<body>
+    <!-- القائمة الجانبية -->
+    <div class="sidebar">
+        <div class="sidebar-header">
+            <h2>نظام إدارة الموظفين</h2>
+        </div>
+        <div class="sidebar-menu">
+            <ul>
+                <li><a href="index.html"><i class="fas fa-home"></i> الرئيسية</a></li>
+                <li><a href="employees.html"><i class="fas fa-users"></i> الموظفين</a></li>
+                <li><a href="departments.html"><i class="fas fa-building"></i> الأقسام</a></li>
+                <li class="active"><a href="job-titles.html"><i class="fas fa-briefcase"></i> المسميات الوظيفية</a></li>
+                <li><a href="vacations.html"><i class="fas fa-calendar-alt"></i> الإجازات</a></li>
+                <li><a href="reports.html"><i class="fas fa-chart-bar"></i> التقارير</a></li>
+                <li><a href="settings.html"><i class="fas fa-cog"></i> الإعدادات</a></li>
+            </ul>
+        </div>
+    </div>
+
+    <!-- المحتوى الرئيسي -->
+    <div class="main-content">
+        <!-- شريط العنوان -->
+        <div class="header">
+            <div class="header-left">
+                <button id="sidebar-toggle" class="sidebar-toggle">
+                    <i class="fas fa-bars"></i>
+                </button>
+                <h2>إدارة المسميات الوظيفية</h2>
+            </div>
+            <div class="header-right">
+                <div class="user-info">
+                    <span id="current-user-name">مرحباً، المدير</span>
+                    <a href="#" class="logout-btn"><i class="fas fa-sign-out-alt"></i> تسجيل الخروج</a>
+                </div>
+            </div>
+        </div>
+
+        <!-- محتوى الصفحة -->
+        <div class="content">
+            <!-- أدوات التحكم -->
+            <div class="control-panel">
+                <div class="search-box">
+                    <input type="text" id="search-input" placeholder="البحث عن مسمى وظيفي...">
+                    <button id="search-btn" class="btn btn-primary">
+                        <i class="fas fa-search"></i> بحث
+                    </button>
+                </div>
+                <div class="action-buttons">
+                    <button id="add-job-title-btn" class="btn btn-success">
+                        <i class="fas fa-plus"></i> إضافة مسمى وظيفي جديد
+                    </button>
+                </div>
+            </div>
+
+            <!-- جدول المسميات الوظيفية -->
+            <div class="data-container">
+                <div class="section-header">
+                    <h3><i class="fas fa-briefcase"></i> قائمة المسميات الوظيفية</h3>
+                </div>
+                <div class="table-responsive">
+                    <table class="data-table" id="job-titles-table">
+                        <thead>
+                            <tr>
+                                <th>الرقم</th>
+                                <th>المسمى الوظيفي</th>
+                                <th>الإجراءات</th>
+                            </tr>
+                        </thead>
+                        <tbody>
+                            <!-- سيتم ملء هذا الجدول بواسطة JavaScript -->
+                        </tbody>
+                    </table>
+                </div>
+            </div>
+        </div>
+
+        <!-- تذييل الصفحة -->
+        <div class="footer">
+            <p>جميع الحقوق محفوظة &copy; 2025 - نظام إدارة الموظفين</p>
+        </div>
+    </div>
+
+    <!-- نموذج إضافة مسمى وظيفي جديد -->
+    <div class="modal" id="add-job-title-modal">
+        <div class="modal-content">
+            <div class="modal-header">
+                <h3 id="add-job-title-modal-title">إضافة مسمى وظيفي جديد</h3>
+                <button class="modal-close"><i class="fas fa-times"></i></button>
+            </div>
+            <div class="modal-body">
+                <form id="add-job-title-form">
+                    <div class="form-group">
+                        <label for="job-title-name">المسمى الوظيفي <span class="required">*</span></label>
+                        <input type="text" id="job-title-name" name="title" required>
+                    </div>
+                    <div class="form-group">
+                        <label for="job-title-description">الوصف</label>
+                        <textarea id="job-title-description" name="description" rows="3"></textarea>
+                    </div>
+                    <div class="modal-footer">
+                        <button type="submit" class="btn btn-success">
+                            <i class="fas fa-save"></i> حفظ
+                        </button>
+                        <button type="button" class="btn btn-secondary modal-close-btn">
+                            <i class="fas fa-times"></i> إلغاء
+                        </button>
+                    </div>
+                </form>
+            </div>
+        </div>
+    </div>
+
+    <!-- سكريبت قاعدة البيانات -->
+    <script src="js/database.js"></script>
+    <!-- سكريبت إدارة المسميات الوظيفية -->
+    <script src="js/job-titles.js"></script>
+</body>
+</html>

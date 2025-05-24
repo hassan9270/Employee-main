@@ -1,0 +1,1003 @@
+<!DOCTYPE html>
+<html lang="ar" dir="rtl">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>التقارير - نظام إدارة الموظفين</title>
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.0.0-beta3/css/all.min.css">
+    <link rel="stylesheet" href="css/styles.css">
+    <link rel="stylesheet" href="css/notifications.css">
+    <link rel="stylesheet" href="css/reports-unified.css">
+    <!-- إضافة مكتبة Chart.js للرسوم البيانية -->
+    <script src="https://cdn.jsdelivr.net/npm/chart.js"></script>
+    <!-- إضافة مكتبة SheetJS للتصدير إلى Excel -->
+    <script src="https://cdn.jsdelivr.net/npm/xlsx@0.18.5/dist/xlsx.full.min.js"></script>
+    <!-- إضافة مكتبة jsPDF للتصدير إلى PDF -->
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/jspdf/2.5.1/jspdf.umd.min.js"></script>
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/jspdf-autotable/3.5.25/jspdf.plugin.autotable.min.js"></script>
+</head>
+<body>
+    <!-- القائمة الجانبية -->
+    <div class="sidebar">
+        <div class="sidebar-header">
+            <h3>نظام إدارة الموظفين</h3>
+            <button id="sidebar-toggle" class="sidebar-toggle">
+                <i class="fas fa-bars"></i>
+            </button>
+        </div>
+        <ul class="sidebar-menu">
+            <li><a href="index.html"><i class="fas fa-home"></i> الرئيسية</a></li>
+            <li><a href="employees.html"><i class="fas fa-users"></i> الموظفين</a></li>
+            <li><a href="add-employee.html"><i class="fas fa-user-plus"></i> إضافة موظف</a></li>
+            <li><a href="departments.html"><i class="fas fa-building"></i> الأقسام</a></li>
+            <li><a href="job-titles.html"><i class="fas fa-briefcase"></i> المسميات الوظيفية</a></li>
+            <li><a href="vacations.html"><i class="fas fa-calendar-alt"></i> الإجازات</a></li>
+            <li><a href="appointments.html"><i class="fas fa-user-tie"></i> التعيينات والاستقالات</a></li>
+            <li class="active"><a href="reports.html"><i class="fas fa-chart-bar"></i> التقارير</a></li>
+            <li><a href="import-export.html"><i class="fas fa-file-export"></i> استيراد وتصدير</a></li>
+            <li><a href="settings.html"><i class="fas fa-cog"></i> الإعدادات</a></li>
+        </ul>
+    </div>
+
+    <!-- المحتوى الرئيسي -->
+    <div class="content">
+        <div class="content-header">
+            <h2><i class="fas fa-chart-bar"></i> التقارير</h2>
+        </div>
+
+        <!-- إضافة حاوية خاصة لقسم التقارير -->
+        <div class="reports-page-wrapper">
+            <div class="reports-container">
+            <!-- قائمة أنواع التقارير -->
+            <div class="reports-sidebar">
+                <h3>أنواع التقارير</h3>
+                <ul class="reports-menu">
+                    <li class="active" data-report="hr-reports">
+                        <i class="fas fa-users"></i> تقارير الموارد البشرية
+                    </li>
+                    <li data-report="appointments-reports">
+                        <i class="fas fa-user-tie"></i> تقارير التعيينات والاستقالات
+                    </li>
+                    <li data-report="performance-reports">
+                        <i class="fas fa-chart-line"></i> تقارير تقييم الأداء
+                    </li>
+                    <li data-report="vacation-reports">
+                        <i class="fas fa-calendar-alt"></i> تقارير الإجازات
+                    </li>
+                    <li data-report="insurance-reports">
+                        <i class="fas fa-shield-alt"></i> تقارير التأمينات
+                    </li>
+                    <li data-report="user-reports">
+                        <i class="fas fa-user-shield"></i> تقارير الصلاحيات والمستخدمين
+                    </li>
+                    <li data-report="custom-reports">
+                        <i class="fas fa-sliders-h"></i> تقارير مخصصة
+                    </li>
+                </ul>
+            </div>
+
+            <!-- محتوى التقارير -->
+            <div class="reports-content">
+                <!-- تقارير الموارد البشرية -->
+                <div id="hr-reports" class="report-section active">
+                    <h3>تقارير الموارد البشرية</h3>
+                    
+                    <div class="report-tabs">
+                        <button class="report-tab active" data-tab="basic-employee-data">بيانات الموظفين الأساسية</button>
+                        <button class="report-tab" data-tab="department-statistics">إحصائيات الأقسام</button>
+                        <button class="report-tab" data-tab="job-title-statistics">إحصائيات المسميات الوظيفية</button>
+                    </div>
+                    
+                    <!-- تقرير بيانات الموظفين الأساسية -->
+                    <div id="basic-employee-data" class="report-tab-content active">
+                        <div class="report-header">
+                            <h4>تقرير بيانات الموظفين الأساسية</h4>
+                            <div class="report-actions">
+                                <button id="export-basic-employee-excel" class="btn btn-primary">
+                                    <i class="fas fa-file-excel"></i> تصدير Excel
+                                </button>
+                                <button id="export-basic-employee-pdf" class="btn btn-danger">
+                                    <i class="fas fa-file-pdf"></i> تصدير PDF
+                                </button>
+                            </div>
+                        </div>
+                        
+                        <div class="report-filters">
+                            <div class="filter-group">
+                                <label for="basic-department-filter">القسم:</label>
+                                <select id="basic-department-filter">
+                                    <option value="0">جميع الأقسام</option>
+                                </select>
+                            </div>
+                            <div class="filter-group">
+                                <label for="basic-status-filter">الحالة:</label>
+                                <select id="basic-status-filter">
+                                    <option value="all">الجميع</option>
+                                    <option value="active">نشط</option>
+                                    <option value="inactive">غير نشط</option>
+                                </select>
+                            </div>
+                            <button id="apply-basic-filters" class="btn btn-primary">تطبيق</button>
+                        </div>
+                        
+                        <div class="report-data">
+                            <div class="table-responsive">
+                                <table id="basic-employee-table" class="data-table">
+                                    <thead>
+                                        <tr>
+                                            <th>الرقم</th>
+                                            <th>الاسم</th>
+                                            <th>القسم</th>
+                                            <th>الوظيفة</th>
+                                            <th>تاريخ التعيين</th>
+                                            <th>الحالة</th>
+                                        </tr>
+                                    </thead>
+                                    <tbody>
+                                        <!-- سيتم ملء البيانات ديناميكياً -->
+                                    </tbody>
+                                </table>
+                            </div>
+                        </div>
+                    </div>
+                    
+                    <!-- تقرير إحصائيات الأقسام -->
+                    <div id="department-statistics" class="report-tab-content">
+                        <div class="report-header">
+                            <h4>تقرير إحصائيات الأقسام</h4>
+                            <div class="report-actions">
+                                <button id="export-department-excel" class="btn btn-primary">
+                                    <i class="fas fa-file-excel"></i> تصدير Excel
+                                </button>
+                                <button id="export-department-pdf" class="btn btn-danger">
+                                    <i class="fas fa-file-pdf"></i> تصدير PDF
+                                </button>
+                            </div>
+                        </div>
+                        
+                        <div class="report-data">
+                            <div class="chart-container">
+                                <canvas id="departments-chart"></canvas>
+                            </div>
+                            <div class="table-responsive">
+                                <table id="department-statistics-table" class="data-table">
+                                    <thead>
+                                        <tr>
+                                            <th>القسم</th>
+                                            <th>عدد الموظفين</th>
+                                            <th>متوسط الراتب</th>
+                                            <th>أعلى راتب</th>
+                                            <th>أدنى راتب</th>
+                                        </tr>
+                                    </thead>
+                                    <tbody>
+                                        <!-- سيتم ملء البيانات ديناميكياً -->
+                                    </tbody>
+                                </table>
+                            </div>
+                        </div>
+                    </div>
+                    
+                    <!-- تقرير إحصائيات المسميات الوظيفية -->
+                    <div id="job-title-statistics" class="report-tab-content">
+                        <div class="report-header">
+                            <h4>تقرير إحصائيات المسميات الوظيفية</h4>
+                            <div class="report-actions">
+                                <button id="export-job-title-excel" class="btn btn-primary">
+                                    <i class="fas fa-file-excel"></i> تصدير Excel
+                                </button>
+                                <button id="export-job-title-pdf" class="btn btn-danger">
+                                    <i class="fas fa-file-pdf"></i> تصدير PDF
+                                </button>
+                            </div>
+                        </div>
+                        
+                        <div class="report-data">
+                            <div class="chart-container">
+                                <canvas id="job-titles-chart"></canvas>
+                            </div>
+                            <div class="table-responsive">
+                                <table id="job-title-statistics-table" class="data-table">
+                                    <thead>
+                                        <tr>
+                                            <th>المسمى الوظيفي</th>
+                                            <th>عدد الموظفين</th>
+                                            <th>متوسط الراتب</th>
+                                            <th>أعلى راتب</th>
+                                            <th>أدنى راتب</th>
+                                        </tr>
+                                    </thead>
+                                    <tbody>
+                                        <!-- سيتم ملء البيانات ديناميكياً -->
+                                    </tbody>
+                                </table>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+                
+                <!-- تقارير التعيينات والاستقالات -->
+                <div id="appointments-reports" class="report-section">
+                    <h3>تقارير التعيينات والاستقالات</h3>
+                    
+                    <div class="report-tabs">
+                        <button class="report-tab active" data-tab="appointments-movement">حركة التعيينات والاستقالات</button>
+                        <button class="report-tab" data-tab="monthly-appointments">التعيينات الشهرية</button>
+                    </div>
+                    
+                    <!-- تقرير حركة التعيينات والاستقالات -->
+                    <div id="appointments-movement" class="report-tab-content active">
+                        <div class="report-header">
+                            <h4>تقرير حركة التعيينات والاستقالات</h4>
+                            <div class="report-actions">
+                                <button id="export-appointments-excel" class="btn btn-primary">
+                                    <i class="fas fa-file-excel"></i> تصدير Excel
+                                </button>
+                                <button id="export-appointments-pdf" class="btn btn-danger">
+                                    <i class="fas fa-file-pdf"></i> تصدير PDF
+                                </button>
+                            </div>
+                        </div>
+                        
+                        <div class="report-filters">
+                            <div class="filter-group">
+                                <label for="appointments-date-from">من تاريخ:</label>
+                                <input type="date" id="appointments-date-from">
+                            </div>
+                            <div class="filter-group">
+                                <label for="appointments-date-to">إلى تاريخ:</label>
+                                <input type="date" id="appointments-date-to">
+                            </div>
+                            <button id="apply-appointments-filters" class="btn btn-primary">تطبيق</button>
+                        </div>
+                        
+                        <div class="report-data">
+                            <div class="chart-container">
+                                <canvas id="appointments-chart"></canvas>
+                            </div>
+                            <div class="table-responsive">
+                                <table id="appointments-table" class="data-table">
+                                    <thead>
+                                        <tr>
+                                            <th>الشهر</th>
+                                            <th>التعيينات الجديدة</th>
+                                            <th>الاستقالات</th>
+                                            <th>صافي التغيير</th>
+                                        </tr>
+                                    </thead>
+                                    <tbody>
+                                        <!-- سيتم ملء البيانات ديناميكياً -->
+                                    </tbody>
+                                </table>
+                            </div>
+                        </div>
+                    </div>
+                    
+                    <!-- تقرير التعيينات الشهرية -->
+                    <div id="monthly-appointments" class="report-tab-content">
+                        <div class="report-header">
+                            <h4>تقرير التعيينات الشهرية</h4>
+                            <div class="report-actions">
+                                <button id="export-monthly-excel" class="btn btn-primary">
+                                    <i class="fas fa-file-excel"></i> تصدير Excel
+                                </button>
+                                <button id="export-monthly-pdf" class="btn btn-danger">
+                                    <i class="fas fa-file-pdf"></i> تصدير PDF
+                                </button>
+                            </div>
+                        </div>
+                        
+                        <div class="report-filters">
+                            <div class="filter-group">
+                                <label for="monthly-year">السنة:</label>
+                                <select id="monthly-year">
+                                    <!-- سيتم ملء السنوات ديناميكياً -->
+                                </select>
+                            </div>
+                            <div class="filter-group">
+                                <label for="monthly-month">الشهر:</label>
+                                <select id="monthly-month">
+                                    <option value="0">جميع الشهور</option>
+                                    <option value="1">يناير</option>
+                                    <option value="2">فبراير</option>
+                                    <option value="3">مارس</option>
+                                    <option value="4">أبريل</option>
+                                    <option value="5">مايو</option>
+                                    <option value="6">يونيو</option>
+                                    <option value="7">يوليو</option>
+                                    <option value="8">أغسطس</option>
+                                    <option value="9">سبتمبر</option>
+                                    <option value="10">أكتوبر</option>
+                                    <option value="11">نوفمبر</option>
+                                    <option value="12">ديسمبر</option>
+                                </select>
+                            </div>
+                            <button id="apply-monthly-filters" class="btn btn-primary">تطبيق</button>
+                        </div>
+                        
+                        <div class="report-data">
+                            <div class="table-responsive">
+                                <table id="monthly-appointments-table" class="data-table">
+                                    <thead>
+                                        <tr>
+                                            <th>الاسم</th>
+                                            <th>القسم</th>
+                                            <th>المسمى الوظيفي</th>
+                                            <th>تاريخ التعيين</th>
+                                            <th>الراتب</th>
+                                        </tr>
+                                    </thead>
+                                    <tbody>
+                                        <!-- سيتم ملء البيانات ديناميكياً -->
+                                    </tbody>
+                                </table>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+                
+                <!-- تقارير تقييم الأداء -->
+                <div id="performance-reports" class="report-section">
+                    <h3>تقارير تقييم الأداء الوظيفي</h3>
+                    
+                    <div class="report-tabs">
+                        <button class="report-tab active" data-tab="performance-evaluation">تقييم الأداء</button>
+                        <button class="report-tab" data-tab="performance-comparison">مقارنة الأداء</button>
+                    </div>
+                    
+                    <!-- تقرير تقييم الأداء -->
+                    <div id="performance-evaluation" class="report-tab-content active">
+                        <div class="report-header">
+                            <h4>تقرير تقييم الأداء</h4>
+                            <div class="report-actions">
+                                <button id="export-performance-excel" class="btn btn-primary">
+                                    <i class="fas fa-file-excel"></i> تصدير Excel
+                                </button>
+                                <button id="export-performance-pdf" class="btn btn-danger">
+                                    <i class="fas fa-file-pdf"></i> تصدير PDF
+                                </button>
+                            </div>
+                        </div>
+                        
+                        <div class="report-filters">
+                            <div class="filter-group">
+                                <label for="performance-department">القسم:</label>
+                                <select id="performance-department">
+                                    <option value="0">جميع الأقسام</option>
+                                </select>
+                            </div>
+                            <div class="filter-group">
+                                <label for="performance-period">الفترة:</label>
+                                <select id="performance-period">
+                                    <option value="last-quarter">الربع الأخير</option>
+                                    <option value="last-half">النصف الأخير</option>
+                                    <option value="last-year">السنة الأخيرة</option>
+                                </select>
+                            </div>
+                            <button id="apply-performance-filters" class="btn btn-primary">تطبيق</button>
+                        </div>
+                        
+                        <div class="report-data">
+                            <div class="chart-container">
+                                <canvas id="performance-chart"></canvas>
+                            </div>
+                            <div class="table-responsive">
+                                <table id="performance-table" class="data-table">
+                                    <thead>
+                                        <tr>
+                                            <th>الاسم</th>
+                                            <th>القسم</th>
+                                            <th>المسمى الوظيفي</th>
+                                            <th>درجة التقييم</th>
+                                            <th>تاريخ التقييم</th>
+                                            <th>المقيم</th>
+                                        </tr>
+                                    </thead>
+                                    <tbody>
+                                        <!-- سيتم ملء البيانات ديناميكياً -->
+                                    </tbody>
+                                </table>
+                            </div>
+                        </div>
+                    </div>
+                    
+                    <!-- تقرير مقارنة الأداء -->
+                    <div id="performance-comparison" class="report-tab-content">
+                        <div class="report-header">
+                            <h4>تقرير مقارنة الأداء</h4>
+                            <div class="report-actions">
+                                <button id="export-comparison-excel" class="btn btn-primary">
+                                    <i class="fas fa-file-excel"></i> تصدير Excel
+                                </button>
+                                <button id="export-comparison-pdf" class="btn btn-danger">
+                                    <i class="fas fa-file-pdf"></i> تصدير PDF
+                                </button>
+                            </div>
+                        </div>
+                        
+                        <div class="report-filters">
+                            <div class="filter-group">
+                                <label for="comparison-department">القسم:</label>
+                                <select id="comparison-department">
+                                    <option value="0">جميع الأقسام</option>
+                                </select>
+                            </div>
+                            <div class="filter-group">
+                                <label for="comparison-year">السنة:</label>
+                                <select id="comparison-year">
+                                    <!-- سيتم ملء السنوات ديناميكياً -->
+                                </select>
+                            </div>
+                            <button id="apply-comparison-filters" class="btn btn-primary">تطبيق</button>
+                        </div>
+                        
+                        <div class="report-data">
+                            <div class="chart-container">
+                                <canvas id="comparison-chart"></canvas>
+                            </div>
+                            <div class="table-responsive">
+                                <table id="comparison-table" class="data-table">
+                                    <thead>
+                                        <tr>
+                                            <th>الاسم</th>
+                                            <th>الربع الأول</th>
+                                            <th>الربع الثاني</th>
+                                            <th>الربع الثالث</th>
+                                            <th>الربع الرابع</th>
+                                            <th>المتوسط</th>
+                                        </tr>
+                                    </thead>
+                                    <tbody>
+                                        <!-- سيتم ملء البيانات ديناميكياً -->
+                                    </tbody>
+                                </table>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+                
+                <!-- تقارير الإجازات -->
+                <div id="vacation-reports" class="report-section">
+                    <h3>تقارير الإجازات</h3>
+                    
+                    <div class="report-tabs">
+                        <button class="report-tab active" data-tab="vacation-balance">رصيد الإجازات</button>
+                        <button class="report-tab" data-tab="vacation-requests">طلبات الإجازات</button>
+                        <button class="report-tab" data-tab="vacation-types">الإجازات حسب النوع</button>
+                    </div>
+                    
+                    <!-- تقرير رصيد الإجازات -->
+                    <div id="vacation-balance" class="report-tab-content active">
+                        <div class="report-header">
+                            <h4>تقرير رصيد الإجازات</h4>
+                            <div class="report-actions">
+                                <button id="export-vacation-balance-excel" class="btn btn-primary">
+                                    <i class="fas fa-file-excel"></i> تصدير Excel
+                                </button>
+                                <button id="export-vacation-balance-pdf" class="btn btn-danger">
+                                    <i class="fas fa-file-pdf"></i> تصدير PDF
+                                </button>
+                            </div>
+                        </div>
+                        
+                        <div class="report-filters">
+                            <div class="filter-group">
+                                <label for="vacation-department">القسم:</label>
+                                <select id="vacation-department">
+                                    <option value="0">جميع الأقسام</option>
+                                </select>
+                            </div>
+                            <button id="apply-vacation-filters" class="btn btn-primary">تطبيق</button>
+                        </div>
+                        
+                        <div class="report-data">
+                            <div class="table-responsive">
+                                <table id="vacation-balance-table" class="data-table">
+                                    <thead>
+                                        <tr>
+                                            <th>الاسم</th>
+                                            <th>القسم</th>
+                                            <th>الرصيد المستحق</th>
+                                            <th>الرصيد المستهلك</th>
+                                            <th>الرصيد المتبقي</th>
+                                        </tr>
+                                    </thead>
+                                    <tbody>
+                                        <!-- سيتم ملء البيانات ديناميكياً -->
+                                    </tbody>
+                                </table>
+                            </div>
+                        </div>
+                    </div>
+                    
+                    <!-- تقرير طلبات الإجازات -->
+                    <div id="vacation-requests" class="report-tab-content">
+                        <div class="report-header">
+                            <h4>تقرير طلبات الإجازات</h4>
+                            <div class="report-actions">
+                                <button id="export-vacation-requests-excel" class="btn btn-primary">
+                                    <i class="fas fa-file-excel"></i> تصدير Excel
+                                </button>
+                                <button id="export-vacation-requests-pdf" class="btn btn-danger">
+                                    <i class="fas fa-file-pdf"></i> تصدير PDF
+                                </button>
+                            </div>
+                        </div>
+                        
+                        <div class="report-filters">
+                            <div class="filter-group">
+                                <label for="requests-date-from">من تاريخ:</label>
+                                <input type="date" id="requests-date-from">
+                            </div>
+                            <div class="filter-group">
+                                <label for="requests-date-to">إلى تاريخ:</label>
+                                <input type="date" id="requests-date-to">
+                            </div>
+                            <div class="filter-group">
+                                <label for="requests-status">الحالة:</label>
+                                <select id="requests-status">
+                                    <option value="all">الجميع</option>
+                                    <option value="approved">موافق عليها</option>
+                                    <option value="rejected">مرفوضة</option>
+                                    <option value="pending">معلقة</option>
+                                </select>
+                            </div>
+                            <button id="apply-requests-filters" class="btn btn-primary">تطبيق</button>
+                        </div>
+                        
+                        <div class="report-data">
+                            <div class="chart-container">
+                                <canvas id="requests-chart"></canvas>
+                            </div>
+                            <div class="table-responsive">
+                                <table id="vacation-requests-table" class="data-table">
+                                    <thead>
+                                        <tr>
+                                            <th>الاسم</th>
+                                            <th>نوع الإجازة</th>
+                                            <th>تاريخ البداية</th>
+                                            <th>تاريخ النهاية</th>
+                                            <th>المدة</th>
+                                            <th>الحالة</th>
+                                        </tr>
+                                    </thead>
+                                    <tbody>
+                                        <!-- سيتم ملء البيانات ديناميكياً -->
+                                    </tbody>
+                                </table>
+                            </div>
+                        </div>
+                    </div>
+                    
+                    <!-- تقرير الإجازات حسب النوع -->
+                    <div id="vacation-types" class="report-tab-content">
+                        <div class="report-header">
+                            <h4>تقرير الإجازات حسب النوع</h4>
+                            <div class="report-actions">
+                                <button id="export-vacation-types-excel" class="btn btn-primary">
+                                    <i class="fas fa-file-excel"></i> تصدير Excel
+                                </button>
+                                <button id="export-vacation-types-pdf" class="btn btn-danger">
+                                    <i class="fas fa-file-pdf"></i> تصدير PDF
+                                </button>
+                            </div>
+                        </div>
+                        
+                        <div class="report-filters">
+                            <div class="filter-group">
+                                <label for="types-year">السنة:</label>
+                                <select id="types-year">
+                                    <!-- سيتم ملء السنوات ديناميكياً -->
+                                </select>
+                            </div>
+                            <button id="apply-types-filters" class="btn btn-primary">تطبيق</button>
+                        </div>
+                        
+                        <div class="report-data">
+                            <div class="chart-container">
+                                <canvas id="types-chart"></canvas>
+                            </div>
+                            <div class="table-responsive">
+                                <table id="vacation-types-table" class="data-table">
+                                    <thead>
+                                        <tr>
+                                            <th>نوع الإجازة</th>
+                                            <th>عدد الطلبات</th>
+                                            <th>إجمالي الأيام</th>
+                                            <th>النسبة المئوية</th>
+                                        </tr>
+                                    </thead>
+                                    <tbody>
+                                        <!-- سيتم ملء البيانات ديناميكياً -->
+                                    </tbody>
+                                </table>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+                
+                <!-- تقارير التأمينات -->
+                <div id="insurance-reports" class="report-section">
+                    <h3>تقارير التأمينات</h3>
+                    
+                    <div class="report-tabs">
+                        <button class="report-tab active" data-tab="insurance-subscriptions">الاشتراكات التأمينية</button>
+                        <button class="report-tab" data-tab="insurance-deductions">الخصومات التأمينية</button>
+                    </div>
+                    
+                    <!-- تقرير الاشتراكات التأمينية -->
+                    <div id="insurance-subscriptions" class="report-tab-content active">
+                        <div class="report-header">
+                            <h4>تقرير الاشتراكات التأمينية</h4>
+                            <div class="report-actions">
+                                <button id="export-insurance-excel" class="btn btn-primary">
+                                    <i class="fas fa-file-excel"></i> تصدير Excel
+                                </button>
+                                <button id="export-insurance-pdf" class="btn btn-danger">
+                                    <i class="fas fa-file-pdf"></i> تصدير PDF
+                                </button>
+                            </div>
+                        </div>
+                        
+                        <div class="report-data">
+                            <div class="table-responsive">
+                                <table id="insurance-subscriptions-table" class="data-table">
+                                    <thead>
+                                        <tr>
+                                            <th>الاسم</th>
+                                            <th>الرقم التأميني</th>
+                                            <th>جهة التأمين</th>
+                                            <th>تاريخ الانضمام</th>
+                                            <th>المهنة في التأمينات</th>
+                                            <th>راتب التأمينات</th>
+                                        </tr>
+                                    </thead>
+                                    <tbody>
+                                        <!-- سيتم ملء البيانات ديناميكياً -->
+                                    </tbody>
+                                </table>
+                            </div>
+                        </div>
+                    </div>
+                    
+                    <!-- تقرير الخصومات التأمينية -->
+                    <div id="insurance-deductions" class="report-tab-content">
+                        <div class="report-header">
+                            <h4>تقرير الخصومات التأمينية</h4>
+                            <div class="report-actions">
+                                <button id="export-deductions-excel" class="btn btn-primary">
+                                    <i class="fas fa-file-excel"></i> تصدير Excel
+                                </button>
+                                <button id="export-deductions-pdf" class="btn btn-danger">
+                                    <i class="fas fa-file-pdf"></i> تصدير PDF
+                                </button>
+                            </div>
+                        </div>
+                        
+                        <div class="report-filters">
+                            <div class="filter-group">
+                                <label for="deductions-month">الشهر:</label>
+                                <select id="deductions-month">
+                                    <option value="1">يناير</option>
+                                    <option value="2">فبراير</option>
+                                    <option value="3">مارس</option>
+                                    <option value="4">أبريل</option>
+                                    <option value="5">مايو</option>
+                                    <option value="6">يونيو</option>
+                                    <option value="7">يوليو</option>
+                                    <option value="8">أغسطس</option>
+                                    <option value="9">سبتمبر</option>
+                                    <option value="10">أكتوبر</option>
+                                    <option value="11">نوفمبر</option>
+                                    <option value="12">ديسمبر</option>
+                                </select>
+                            </div>
+                            <div class="filter-group">
+                                <label for="deductions-year">السنة:</label>
+                                <select id="deductions-year">
+                                    <!-- سيتم ملء السنوات ديناميكياً -->
+                                </select>
+                            </div>
+                            <button id="apply-deductions-filters" class="btn btn-primary">تطبيق</button>
+                        </div>
+                        
+                        <div class="report-data">
+                            <div class="table-responsive">
+                                <table id="insurance-deductions-table" class="data-table">
+                                    <thead>
+                                        <tr>
+                                            <th>الاسم</th>
+                                            <th>راتب التأمينات</th>
+                                            <th>نسبة الاشتراك</th>
+                                            <th>قيمة الخصم</th>
+                                            <th>حصة الشركة</th>
+                                            <th>الإجمالي</th>
+                                        </tr>
+                                    </thead>
+                                    <tbody>
+                                        <!-- سيتم ملء البيانات ديناميكياً -->
+                                    </tbody>
+                                </table>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+                
+                <!-- تقارير الصلاحيات والمستخدمين -->
+                <div id="user-reports" class="report-section">
+                    <h3>تقارير الصلاحيات والمستخدمين</h3>
+                    
+                    <div class="report-tabs">
+                        <button class="report-tab active" data-tab="user-permissions">المستخدمين وصلاحياتهم</button>
+                        <button class="report-tab" data-tab="user-activities">العمليات التي قام بها المستخدمون</button>
+                    </div>
+                    
+                    <!-- تقرير المستخدمين وصلاحياتهم -->
+                    <div id="user-permissions" class="report-tab-content active">
+                        <div class="report-header">
+                            <h4>تقرير المستخدمين وصلاحياتهم</h4>
+                            <div class="report-actions">
+                                <button id="export-permissions-excel" class="btn btn-primary">
+                                    <i class="fas fa-file-excel"></i> تصدير Excel
+                                </button>
+                                <button id="export-permissions-pdf" class="btn btn-danger">
+                                    <i class="fas fa-file-pdf"></i> تصدير PDF
+                                </button>
+                            </div>
+                        </div>
+                        
+                        <div class="report-data">
+                            <div class="table-responsive">
+                                <table id="user-permissions-table" class="data-table">
+                                    <thead>
+                                        <tr>
+                                            <th>اسم المستخدم</th>
+                                            <th>الموظف المرتبط</th>
+                                            <th>الدور</th>
+                                            <th>الحالة</th>
+                                            <th>آخر تسجيل دخول</th>
+                                            <th>الصلاحيات</th>
+                                        </tr>
+                                    </thead>
+                                    <tbody>
+                                        <!-- سيتم ملء البيانات ديناميكياً -->
+                                    </tbody>
+                                </table>
+                            </div>
+                        </div>
+                    </div>
+                    
+                    <!-- تقرير العمليات التي قام بها المستخدمون -->
+                    <div id="user-activities" class="report-tab-content">
+                        <div class="report-header">
+                            <h4>تقرير العمليات التي قام بها المستخدمون</h4>
+                            <div class="report-actions">
+                                <button id="export-activities-excel" class="btn btn-primary">
+                                    <i class="fas fa-file-excel"></i> تصدير Excel
+                                </button>
+                                <button id="export-activities-pdf" class="btn btn-danger">
+                                    <i class="fas fa-file-pdf"></i> تصدير PDF
+                                </button>
+                            </div>
+                        </div>
+                        
+                        <div class="report-filters">
+                            <div class="filter-group">
+                                <label for="activities-user">المستخدم:</label>
+                                <select id="activities-user">
+                                    <option value="0">جميع المستخدمين</option>
+                                </select>
+                            </div>
+                            <div class="filter-group">
+                                <label for="activities-date-from">من تاريخ:</label>
+                                <input type="date" id="activities-date-from">
+                            </div>
+                            <div class="filter-group">
+                                <label for="activities-date-to">إلى تاريخ:</label>
+                                <input type="date" id="activities-date-to">
+                            </div>
+                            <button id="apply-activities-filters" class="btn btn-primary">تطبيق</button>
+                        </div>
+                        
+                        <div class="report-data">
+                            <div class="table-responsive">
+                                <table id="user-activities-table" class="data-table">
+                                    <thead>
+                                        <tr>
+                                            <th>المستخدم</th>
+                                            <th>نوع النشاط</th>
+                                            <th>الوصف</th>
+                                            <th>التاريخ والوقت</th>
+                                        </tr>
+                                    </thead>
+                                    <tbody>
+                                        <!-- سيتم ملء البيانات ديناميكياً -->
+                                    </tbody>
+                                </table>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+                
+                <!-- تقارير مخصصة -->
+                <div id="custom-reports" class="report-section">
+                    <h3>تقارير مخصصة</h3>
+                    
+                    <div class="report-tabs">
+                        <button class="report-tab active" data-tab="department-report">تقرير حسب القسم</button>
+                        <button class="report-tab" data-tab="performance-comparison-report">تقرير مقارنة الأداء</button>
+                        <button class="report-tab" data-tab="job-change-report">تقرير التغير الوظيفي</button>
+                    </div>
+                    
+                    <!-- تقرير حسب القسم -->
+                    <div id="department-report" class="report-tab-content active">
+                        <div class="report-header">
+                            <h4>تقرير حسب القسم</h4>
+                            <div class="report-actions">
+                                <button id="export-department-report-excel" class="btn btn-primary">
+                                    <i class="fas fa-file-excel"></i> تصدير Excel
+                                </button>
+                                <button id="export-department-report-pdf" class="btn btn-danger">
+                                    <i class="fas fa-file-pdf"></i> تصدير PDF
+                                </button>
+                            </div>
+                        </div>
+                        
+                        <div class="report-filters">
+                            <div class="filter-group">
+                                <label for="custom-department">القسم:</label>
+                                <select id="custom-department">
+                                    <option value="0">اختر القسم</option>
+                                </select>
+                            </div>
+                            <div class="filter-group">
+                                <label for="custom-report-type">نوع التقرير:</label>
+                                <select id="custom-report-type">
+                                    <option value="employees">الموظفين</option>
+                                    <option value="salaries">الرواتب</option>
+                                    <option value="vacations">الإجازات</option>
+                                    <option value="performance">الأداء</option>
+                                </select>
+                            </div>
+                            <button id="apply-custom-department-filters" class="btn btn-primary">تطبيق</button>
+                        </div>
+                        
+                        <div class="report-data">
+                            <div id="custom-department-chart-container" class="chart-container">
+                                <canvas id="custom-department-chart"></canvas>
+                            </div>
+                            <div class="table-responsive">
+                                <table id="custom-department-table" class="data-table">
+                                    <thead>
+                                        <!-- سيتم ملء العناوين ديناميكياً -->
+                                    </thead>
+                                    <tbody>
+                                        <!-- سيتم ملء البيانات ديناميكياً -->
+                                    </tbody>
+                                </table>
+                            </div>
+                        </div>
+                    </div>
+                    
+                    <!-- تقرير مقارنة الأداء -->
+                    <div id="performance-comparison-report" class="report-tab-content">
+                        <div class="report-header">
+                            <h4>تقرير مقارنة الأداء بين موظفين</h4>
+                            <div class="report-actions">
+                                <button id="export-comparison-report-excel" class="btn btn-primary">
+                                    <i class="fas fa-file-excel"></i> تصدير Excel
+                                </button>
+                                <button id="export-comparison-report-pdf" class="btn btn-danger">
+                                    <i class="fas fa-file-pdf"></i> تصدير PDF
+                                </button>
+                            </div>
+                        </div>
+                        
+                        <div class="report-filters">
+                            <div class="filter-group">
+                                <label for="employee1">الموظف الأول:</label>
+                                <select id="employee1">
+                                    <option value="0">اختر الموظف</option>
+                                </select>
+                            </div>
+                            <div class="filter-group">
+                                <label for="employee2">الموظف الثاني:</label>
+                                <select id="employee2">
+                                    <option value="0">اختر الموظف</option>
+                                </select>
+                            </div>
+                            <div class="filter-group">
+                                <label for="comparison-type">نوع المقارنة:</label>
+                                <select id="comparison-type">
+                                    <option value="performance">الأداء</option>
+                                    <option value="attendance">الحضور</option>
+                                    <option value="vacations">الإجازات</option>
+                                </select>
+                            </div>
+                            <button id="apply-comparison-report-filters" class="btn btn-primary">تطبيق</button>
+                        </div>
+                        
+                        <div class="report-data">
+                            <div class="chart-container">
+                                <canvas id="comparison-report-chart"></canvas>
+                            </div>
+                            <div class="table-responsive">
+                                <table id="comparison-report-table" class="data-table">
+                                    <thead>
+                                        <!-- سيتم ملء العناوين ديناميكياً -->
+                                    </thead>
+                                    <tbody>
+                                        <!-- سيتم ملء البيانات ديناميكياً -->
+                                    </tbody>
+                                </table>
+                            </div>
+                        </div>
+                    </div>
+                    
+                    <!-- تقرير التغير الوظيفي -->
+                    <div id="job-change-report" class="report-tab-content">
+                        <div class="report-header">
+                            <h4>تقرير التغير الوظيفي</h4>
+                            <div class="report-actions">
+                                <button id="export-job-change-excel" class="btn btn-primary">
+                                    <i class="fas fa-file-excel"></i> تصدير Excel
+                                </button>
+                                <button id="export-job-change-pdf" class="btn btn-danger">
+                                    <i class="fas fa-file-pdf"></i> تصدير PDF
+                                </button>
+                            </div>
+                        </div>
+                        
+                        <div class="report-filters">
+                            <div class="filter-group">
+                                <label for="change-date-from">من تاريخ:</label>
+                                <input type="date" id="change-date-from">
+                            </div>
+                            <div class="filter-group">
+                                <label for="change-date-to">إلى تاريخ:</label>
+                                <input type="date" id="change-date-to">
+                            </div>
+                            <div class="filter-group">
+                                <label for="change-type">نوع التغيير:</label>
+                                <select id="change-type">
+                                    <option value="all">جميع التغييرات</option>
+                                    <option value="promotion">ترقيات</option>
+                                    <option value="transfer">نقل</option>
+                                    <option value="title-change">تغيير مسمى</option>
+                                </select>
+                            </div>
+                            <button id="apply-job-change-filters" class="btn btn-primary">تطبيق</button>
+                        </div>
+                        
+                        <div class="report-data">
+                            <div class="chart-container">
+                                <canvas id="job-change-chart"></canvas>
+                            </div>
+                            <div class="table-responsive">
+                                <table id="job-change-table" class="data-table">
+                                    <thead>
+                                        <tr>
+                                            <th>الاسم</th>
+                                            <th>نوع التغيير</th>
+                                            <th>من</th>
+                                            <th>إلى</th>
+                                            <th>تاريخ التغيير</th>
+                                            <th>ملاحظات</th>
+                                        </tr>
+                                    </thead>
+                                    <tbody>
+                                        <!-- سيتم ملء البيانات ديناميكياً -->
+                                    </tbody>
+                                </table>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+
+    <script src="js/database.js"></script>
+    <script src="js/reports-unified.js"></script>
+</body>
+</html>

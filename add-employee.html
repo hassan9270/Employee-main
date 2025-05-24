@@ -1,0 +1,234 @@
+<!DOCTYPE html>
+<html lang="ar" dir="rtl">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>إضافة موظف جديد - نظام إدارة الموظفين</title>
+    <link rel="stylesheet" href="css/styles.css">
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.0.0/css/all.min.css">
+</head>
+<body>
+    <!-- القائمة الجانبية -->
+    <div class="sidebar">
+        <div class="sidebar-header">
+            <h2>نظام إدارة الموظفين</h2>
+        </div>
+        <div class="sidebar-menu">
+            <ul>
+                <li><a href="index.html"><i class="fas fa-home"></i> الرئيسية</a></li>
+                <li class="active"><a href="employees.html"><i class="fas fa-users"></i> الموظفين</a></li>
+                <li><a href="departments.html"><i class="fas fa-building"></i> الأقسام</a></li>
+                <li><a href="job-titles.html"><i class="fas fa-briefcase"></i> المسميات الوظيفية</a></li>
+                <li><a href="reports.html"><i class="fas fa-chart-bar"></i> التقارير</a></li>
+                <li><a href="settings.html"><i class="fas fa-cog"></i> الإعدادات</a></li>
+            </ul>
+        </div>
+    </div>
+
+    <!-- المحتوى الرئيسي -->
+    <div class="main-content">
+        <!-- شريط العنوان -->
+        <div class="header">
+            <div class="header-left">
+                <button id="sidebar-toggle" class="sidebar-toggle">
+                    <i class="fas fa-bars"></i>
+                </button>
+                <h2>إضافة موظف جديد</h2>
+            </div>
+            <div class="header-right">
+                <div class="user-info">
+                    <span>مرحباً، المدير</span>
+                    <a href="#" class="logout-btn"><i class="fas fa-sign-out-alt"></i> تسجيل الخروج</a>
+                </div>
+            </div>
+        </div>
+
+        <!-- محتوى الصفحة -->
+        <div class="content">
+            <form id="add-employee-form" class="form-container">
+                <!-- البيانات الأساسية -->
+                <div class="form-section">
+                    <h3 class="section-title">البيانات الأساسية</h3>
+                    <div class="form-row">
+                        <div class="form-group">
+                            <label for="employeeCode">كود الموظف *</label>
+                            <input type="text" id="employeeCode" name="employeeCode" required readonly>
+                        </div>
+                        <div class="form-group">
+                            <label for="fullName">الاسم الكامل *</label>
+                            <input type="text" id="fullName" name="fullName" required>
+                        </div>
+                    </div>
+                    <div class="form-row">
+                        <div class="form-group">
+                            <label for="department">الإدارة *</label>
+                            <input type="text" id="department" name="department" required placeholder="مثال: قسم الموارد البشرية">
+                        </div>
+                        <div class="form-group">
+                            <label for="jobTitle">الوظيفة *</label>
+                            <input type="text" id="jobTitle" name="jobTitle" required placeholder="مثال: موظف موارد بشرية">
+                        </div>
+                    </div>
+                    <div class="form-row">
+                        <div class="form-group">
+                            <label for="qualification">المؤهل *</label>
+                            <input type="text" id="qualification" name="qualification" required placeholder="مثال: بكالوريوس">
+                        </div>
+                        <div class="form-group">
+                            <label for="phone">التليفون *</label>
+                            <input type="tel" id="phone" name="phone" required pattern="^(05|5)(5|0|3|6|4|9|1|8|7)([0-9]{7})$" placeholder="مثال: 0501234567">
+                        </div>
+                    </div>
+                </div>
+
+                <!-- البيانات الشخصية -->
+                <div class="form-section">
+                    <h3 class="section-title">البيانات الشخصية</h3>
+                    <div class="form-row">
+                        <div class="form-group">
+                            <label for="hireDate">تاريخ التعيين <span class="required">*</span></label>
+                            <input type="date" id="hireDate" name="hireDate" required>
+                        </div>
+                        <div class="form-group">
+                            <label for="birthDate">تاريخ الميلاد <span class="required">*</span></label>
+                            <input type="date" id="birthDate" name="birthDate" required>
+                        </div>
+                    </div>
+                    <div class="form-row">
+                        <div class="form-group">
+                            <label for="maritalStatus">الحالة الاجتماعية <span class="required">*</span></label>
+                            <select id="maritalStatus" name="maritalStatus" required>
+                                <option value="">اختر الحالة الاجتماعية</option>
+                                <option value="single">أعزب</option>
+                                <option value="married">متزوج</option>
+                                <option value="divorced">مطلق</option>
+                                <option value="widowed">أرمل</option>
+                            </select>
+                        </div>
+                        <div class="form-group">
+                            <label for="childrenCount">عدد الأبناء</label>
+                            <input type="number" id="childrenCount" name="childrenCount" min="0">
+                        </div>
+                    </div>
+                    <div class="form-row">
+                        <div class="form-group full-width">
+                            <label for="address">العنوان <span class="required">*</span></label>
+                            <textarea id="address" name="address" required></textarea>
+                        </div>
+                    </div>
+                    <div class="form-row">
+                        <div class="form-group">
+                            <label for="email">البريد الإلكتروني</label>
+                            <input type="email" id="email" name="email">
+                        </div>
+                        <div class="form-group">
+                            <label for="nationalID">الرقم القومي <span class="required">*</span></label>
+                            <input type="text" id="nationalID" name="nationalID" required>
+                        </div>
+                    </div>
+                </div>
+
+                <!-- بيانات التأمين -->
+                <div class="form-section">
+                    <h3 class="section-title">بيانات التأمين</h3>
+                    <div class="form-row">
+                        <div class="form-group">
+                            <label for="insuranceType">التأمين التكافلي</label>
+                            <input type="text" id="insuranceType" name="insuranceType" placeholder="مثال: تأمين تكافلي">
+                        </div>
+                        <div class="form-group">
+                            <label for="insuranceNumber">الرقم التأميني</label>
+                            <input type="text" id="insuranceNumber" name="insuranceNumber">
+                        </div>
+                    </div>
+                    <div class="form-row">
+                        <div class="form-group">
+                            <label for="insuranceAuthority">جهة التأمين</label>
+                            <input type="text" id="insuranceAuthority" name="insuranceAuthority">
+                        </div>
+                        <div class="form-group">
+                            <label for="healthCardNumber">رقم البطاقة الصحية</label>
+                            <input type="text" id="healthCardNumber" name="healthCardNumber">
+                        </div>
+                    </div>
+                    <div class="form-row">
+                        <div class="form-group">
+                            <label for="insuranceDate">تاريخ التأمين عليه</label>
+                            <input type="date" id="insuranceDate" name="insuranceDate">
+                        </div>
+                        <div class="form-group">
+                            <label for="insuranceJob">المهنة في التأمينات</label>
+                            <input type="text" id="insuranceJob" name="insuranceJob">
+                        </div>
+                    </div>
+                </div>
+
+                <!-- بيانات إضافية -->
+                <div class="form-section">
+                    <h3 class="section-title">بيانات إضافية</h3>
+                    <div class="form-row">
+                        <div class="form-group">
+                            <label for="specialNeeds">ذوي الهمم</label>
+                            <select id="specialNeeds" name="specialNeeds">
+                                <option value="no">لا</option>
+                                <option value="yes">نعم</option>
+                            </select>
+                        </div>
+                        <div class="form-group">
+                            <label for="workDuration">مدة العمل بالشركة (بالأيام)</label>
+                            <input type="text" id="workDuration" name="workDuration" readonly>
+                        </div>
+                    </div>
+                    <div class="form-row">
+                        <div class="form-group">
+                            <label for="currentAge">السن حتى تاريخه</label>
+                            <input type="text" id="currentAge" name="currentAge" readonly>
+                        </div>
+                    </div>
+                </div>
+
+                <!-- المرفقات -->
+                <div class="form-section">
+                    <h3 class="section-title">المرفقات</h3>
+                    <div class="form-row">
+                        <div class="form-group">
+                            <label for="photo">صورة الموظف</label>
+                            <input type="file" id="photo" name="photo" accept="image/*">
+                            <div id="photo-preview" class="photo-preview">
+                                <i class="fas fa-user"></i>
+                            </div>
+                        </div>
+                    </div>
+                    <div class="form-row">
+                        <div class="form-group full-width">
+                            <label for="documents">مستندات الموظف</label>
+                            <input type="file" id="documents" name="documents" multiple>
+                            <div id="documents-preview" class="documents-preview"></div>
+                        </div>
+                    </div>
+                </div>
+
+                <!-- أزرار التحكم -->
+                <div class="form-actions">
+                    <button type="button" class="btn btn-secondary" onclick="window.location.href='employees.html'">
+                        <i class="fas fa-times"></i> إلغاء
+                    </button>
+                    <button type="submit" class="btn btn-primary">
+                        <i class="fas fa-save"></i> حفظ
+                    </button>
+                </div>
+            </form>
+        </div>
+
+        <!-- تذييل الصفحة -->
+        <div class="footer">
+            <p>جميع الحقوق محفوظة &copy; 2025 - نظام إدارة الموظفين</p>
+        </div>
+    </div>
+
+    <!-- سكريبت قاعدة البيانات -->
+    <script src="js/database.js"></script>
+    <!-- سكريبت صفحة إضافة موظف -->
+    <script src="js/add-employee.js"></script>
+</body>
+</html>

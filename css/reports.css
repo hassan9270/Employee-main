@@ -1,0 +1,563 @@
+/* ===== تنسيق قسم التقارير ===== */
+:root {
+    /* ألوان التقارير */
+    --report-primary: #3f51b5;
+    --report-secondary: #ff4081;
+    --report-success: #4caf50;
+    --report-warning: #ff9800;
+    --report-danger: #f44336;
+    --report-info: #03a9f4;
+    --report-light: #f5f5f5;
+    --report-dark: #212121;
+    
+    /* ألوان أنواع التقارير */
+    --hr-report-color: #3f51b5;
+    --appointments-report-color: #009688;
+    --performance-report-color: #673ab7;
+    --vacation-report-color: #ff9800;
+    --insurance-report-color: #2196f3;
+    --user-report-color: #795548;
+    --custom-report-color: #607d8b;
+}
+
+/* تخطيط قسم التقارير */
+.reports-container {
+    display: grid;
+    grid-template-columns: 280px 1fr;
+    gap: 25px;
+    margin: 20px 0 30px;
+}
+
+/* القائمة الجانبية للتقارير */
+.reports-sidebar {
+    background: white;
+    border-radius: 12px;
+    box-shadow: 0 4px 15px rgba(0, 0, 0, 0.08);
+    overflow: hidden;
+    position: sticky;
+    top: 90px;
+    max-height: calc(100vh - 120px);
+    transition: all 0.3s ease;
+}
+
+.reports-sidebar h3 {
+    padding: 20px;
+    margin: 0;
+    background: linear-gradient(135deg, var(--report-primary), var(--report-primary-dark, #303f9f));
+    color: white;
+    font-size: 1.2rem;
+    font-weight: 600;
+    text-align: center;
+    position: relative;
+    overflow: hidden;
+}
+
+.reports-sidebar h3::after {
+    content: '';
+    position: absolute;
+    bottom: 0;
+    left: 0;
+    width: 100%;
+    height: 3px;
+    background: linear-gradient(to left, transparent, var(--report-secondary), transparent);
+}
+
+.reports-menu {
+    padding: 15px 0;
+    overflow-y: auto;
+    max-height: calc(100vh - 200px);
+}
+
+.reports-menu li {
+    padding: 0;
+    margin: 5px 10px;
+    border-radius: 8px;
+    transition: all 0.3s ease;
+    position: relative;
+}
+
+.reports-menu li::before {
+    content: '';
+    position: absolute;
+    top: 0;
+    right: 0;
+    height: 100%;
+    width: 0;
+    background-color: currentColor;
+    opacity: 0.1;
+    transition: width 0.3s ease;
+    border-radius: 8px;
+}
+
+.reports-menu li:hover::before {
+    width: 100%;
+}
+
+.reports-menu li a,
+.reports-menu li[data-report] {
+    display: flex;
+    align-items: center;
+    padding: 15px;
+    color: var(--report-dark);
+    cursor: pointer;
+    transition: all 0.3s ease;
+    border-radius: 8px;
+}
+
+.reports-menu li i {
+    margin-left: 15px;
+    font-size: 1.2rem;
+    width: 24px;
+    height: 24px;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    border-radius: 50%;
+    transition: all 0.3s ease;
+}
+
+/* ألوان أيقونات أنواع التقارير */
+.reports-menu li[data-report="hr-reports"] i {
+    color: var(--hr-report-color);
+    background-color: rgba(63, 81, 181, 0.1);
+}
+
+.reports-menu li[data-report="appointments-reports"] i {
+    color: var(--appointments-report-color);
+    background-color: rgba(0, 150, 136, 0.1);
+}
+
+.reports-menu li[data-report="performance-reports"] i {
+    color: var(--performance-report-color);
+    background-color: rgba(103, 58, 183, 0.1);
+}
+
+.reports-menu li[data-report="vacation-reports"] i {
+    color: var(--vacation-report-color);
+    background-color: rgba(255, 152, 0, 0.1);
+}
+
+.reports-menu li[data-report="insurance-reports"] i {
+    color: var(--insurance-report-color);
+    background-color: rgba(33, 150, 243, 0.1);
+}
+
+.reports-menu li[data-report="user-reports"] i {
+    color: var(--user-report-color);
+    background-color: rgba(121, 85, 72, 0.1);
+}
+
+.reports-menu li[data-report="custom-reports"] i {
+    color: var(--custom-report-color);
+    background-color: rgba(96, 125, 139, 0.1);
+}
+
+/* حالة التنشيط للقائمة */
+.reports-menu li.active {
+    background-color: rgba(63, 81, 181, 0.08);
+}
+
+.reports-menu li.active[data-report="hr-reports"] {
+    background-color: rgba(63, 81, 181, 0.08);
+    color: var(--hr-report-color);
+}
+
+.reports-menu li.active[data-report="appointments-reports"] {
+    background-color: rgba(0, 150, 136, 0.08);
+    color: var(--appointments-report-color);
+}
+
+.reports-menu li.active[data-report="performance-reports"] {
+    background-color: rgba(103, 58, 183, 0.08);
+    color: var(--performance-report-color);
+}
+
+.reports-menu li.active[data-report="vacation-reports"] {
+    background-color: rgba(255, 152, 0, 0.08);
+    color: var(--vacation-report-color);
+}
+
+.reports-menu li.active[data-report="insurance-reports"] {
+    background-color: rgba(33, 150, 243, 0.08);
+    color: var(--insurance-report-color);
+}
+
+.reports-menu li.active[data-report="user-reports"] {
+    background-color: rgba(121, 85, 72, 0.08);
+    color: var(--user-report-color);
+}
+
+.reports-menu li.active[data-report="custom-reports"] {
+    background-color: rgba(96, 125, 139, 0.08);
+    color: var(--custom-report-color);
+}
+
+.reports-menu li.active i {
+    transform: scale(1.2);
+}
+
+/* محتوى التقارير */
+.reports-content {
+    background: white;
+    border-radius: 12px;
+    box-shadow: 0 4px 15px rgba(0, 0, 0, 0.08);
+    overflow: hidden;
+}
+
+.report-section {
+    display: none;
+    animation: fadeIn 0.5s ease forwards;
+}
+
+.report-section.active {
+    display: block;
+}
+
+.report-section > h3 {
+    padding: 20px;
+    margin: 0;
+    background: linear-gradient(135deg, var(--report-primary), var(--report-primary-dark, #303f9f));
+    color: white;
+    font-size: 1.3rem;
+    font-weight: 600;
+    text-align: center;
+    position: relative;
+}
+
+.report-section > h3::after {
+    content: '';
+    position: absolute;
+    bottom: 0;
+    left: 0;
+    width: 100%;
+    height: 3px;
+    background: linear-gradient(to left, transparent, var(--report-secondary), transparent);
+}
+
+/* تبويبات التقارير */
+.report-tabs {
+    display: flex;
+    flex-wrap: wrap;
+    gap: 10px;
+    padding: 20px;
+    background-color: #f8f9fa;
+    border-bottom: 1px solid var(--border-color);
+}
+
+.report-tab {
+    padding: 12px 20px;
+    background-color: white;
+    border: 1px solid var(--border-color);
+    border-radius: 8px;
+    font-family: var(--font-primary);
+    font-size: 1rem;
+    font-weight: 500;
+    color: var(--dark-gray);
+    cursor: pointer;
+    transition: all 0.3s ease;
+    position: relative;
+    overflow: hidden;
+}
+
+.report-tab::after {
+    content: '';
+    position: absolute;
+    bottom: 0;
+    right: 0;
+    width: 0;
+    height: 3px;
+    background-color: var(--report-primary);
+    transition: width 0.3s ease;
+}
+
+.report-tab:hover {
+    background-color: rgba(63, 81, 181, 0.05);
+    color: var(--report-primary);
+    transform: translateY(-2px);
+    box-shadow: 0 4px 8px rgba(0, 0, 0, 0.05);
+}
+
+.report-tab:hover::after {
+    width: 100%;
+}
+
+.report-tab.active {
+    background-color: var(--report-primary);
+    color: white;
+    box-shadow: 0 4px 8px rgba(63, 81, 181, 0.3);
+}
+
+.report-tab.active::after {
+    width: 100%;
+    background-color: var(--report-secondary);
+}
+
+/* محتوى التبويبات */
+.report-tab-content {
+    display: none;
+    padding: 20px;
+    animation: fadeIn 0.5s ease forwards;
+}
+
+.report-tab-content.active {
+    display: block;
+}
+
+/* رأس التقرير */
+.report-header {
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+    margin-bottom: 25px;
+    padding-bottom: 15px;
+    border-bottom: 1px solid var(--border-color);
+}
+
+.report-header h4 {
+    font-size: 1.2rem;
+    font-weight: 600;
+    color: var(--report-primary);
+    margin: 0;
+    position: relative;
+    padding-right: 15px;
+}
+
+.report-header h4::before {
+    content: '';
+    position: absolute;
+    right: 0;
+    top: 50%;
+    transform: translateY(-50%);
+    width: 5px;
+    height: 20px;
+    background-color: var(--report-primary);
+    border-radius: 3px;
+}
+
+/* فلاتر التقارير */
+.report-filters {
+    display: flex;
+    flex-wrap: wrap;
+    gap: 15px;
+    margin-bottom: 25px;
+    padding: 15px;
+    background-color: #f8f9fa;
+    border-radius: 8px;
+    border: 1px solid var(--border-color);
+    align-items: flex-end;
+}
+
+.filter-group {
+    flex: 1;
+    min-width: 200px;
+}
+
+.filter-group label {
+    display: block;
+    margin-bottom: 8px;
+    font-weight: 500;
+    color: var(--dark-gray);
+}
+
+.filter-group select,
+.filter-group input {
+    width: 100%;
+    padding: 10px 15px;
+    border: 1px solid var(--border-color);
+    border-radius: 8px;
+    font-family: var(--font-primary);
+    font-size: 1rem;
+    transition: all 0.3s ease;
+}
+
+.filter-group select:focus,
+.filter-group input:focus {
+    outline: none;
+    border-color: var(--report-primary);
+    box-shadow: 0 0 0 3px rgba(63, 81, 181, 0.2);
+}
+
+/* أزرار التقارير */
+.report-actions {
+    display: flex;
+    gap: 10px;
+}
+
+.report-actions .btn {
+    padding: 10px 15px;
+    display: flex;
+    align-items: center;
+    gap: 8px;
+    border-radius: 8px;
+    font-weight: 500;
+    transition: all 0.3s ease;
+}
+
+.report-actions .btn i {
+    font-size: 1rem;
+}
+
+.report-actions .btn-primary {
+    background-color: var(--report-primary);
+    color: white;
+    border: none;
+}
+
+.report-actions .btn-primary:hover {
+    background-color: var(--report-primary-dark, #303f9f);
+    transform: translateY(-2px);
+    box-shadow: 0 4px 8px rgba(63, 81, 181, 0.3);
+}
+
+.report-actions .btn-danger {
+    background-color: var(--report-danger);
+    color: white;
+    border: none;
+}
+
+.report-actions .btn-danger:hover {
+    background-color: var(--danger-dark);
+    transform: translateY(-2px);
+    box-shadow: 0 4px 8px rgba(244, 67, 54, 0.3);
+}
+
+/* بيانات التقرير */
+.report-data {
+    margin-top: 20px;
+}
+
+/* حاوية الرسم البياني */
+.chart-container {
+    width: 100%;
+    height: 400px;
+    margin-bottom: 30px;
+    padding: 20px;
+    background-color: white;
+    border-radius: 8px;
+    box-shadow: 0 2px 10px rgba(0, 0, 0, 0.05);
+    border: 1px solid var(--border-color);
+}
+
+/* جداول التقارير */
+.data-table {
+    width: 100%;
+    border-collapse: separate;
+    border-spacing: 0;
+    border-radius: 8px;
+    overflow: hidden;
+    box-shadow: 0 2px 10px rgba(0, 0, 0, 0.05);
+    margin-bottom: 30px;
+}
+
+.data-table thead th {
+    background: linear-gradient(to left, rgba(63, 81, 181, 0.1), rgba(63, 81, 181, 0.05));
+    color: var(--report-primary);
+    font-weight: 600;
+    padding: 15px;
+    text-align: right;
+    border-bottom: 2px solid var(--report-primary);
+    position: sticky;
+    top: 0;
+    z-index: 10;
+}
+
+.data-table tbody tr {
+    transition: all 0.3s ease;
+    border-bottom: 1px solid var(--border-color);
+}
+
+.data-table tbody tr:last-child {
+    border-bottom: none;
+}
+
+.data-table tbody tr:hover {
+    background-color: rgba(63, 81, 181, 0.05);
+    transform: translateY(-2px);
+    box-shadow: 0 4px 8px rgba(0, 0, 0, 0.05);
+}
+
+.data-table tbody td {
+    padding: 12px 15px;
+    vertical-align: middle;
+}
+
+.data-table .actions {
+    display: flex;
+    gap: 8px;
+    justify-content: center;
+}
+
+/* تأثيرات الحركة */
+@keyframes fadeIn {
+    from {
+        opacity: 0;
+        transform: translateY(10px);
+    }
+    to {
+        opacity: 1;
+        transform: translateY(0);
+    }
+}
+
+/* تنسيق للشاشات الصغيرة */
+@media (max-width: 992px) {
+    .reports-container {
+        grid-template-columns: 1fr;
+    }
+    
+    .reports-sidebar {
+        position: relative;
+        top: 0;
+        max-height: none;
+    }
+    
+    .reports-menu {
+        max-height: none;
+    }
+}
+
+@media (max-width: 768px) {
+    .report-tabs {
+        flex-direction: column;
+        gap: 8px;
+    }
+    
+    .report-header {
+        flex-direction: column;
+        align-items: flex-start;
+        gap: 15px;
+    }
+    
+    .report-actions {
+        width: 100%;
+        justify-content: space-between;
+    }
+    
+    .report-filters {
+        flex-direction: column;
+    }
+    
+    .filter-group {
+        width: 100%;
+    }
+    
+    .chart-container {
+        height: 300px;
+    }
+}
+
+@media (max-width: 576px) {
+    .report-tab {
+        width: 100%;
+        text-align: center;
+    }
+    
+    .data-table {
+        font-size: 0.9rem;
+    }
+    
+    .data-table thead th,
+    .data-table tbody td {
+        padding: 10px 8px;
+    }
+}

@@ -1,0 +1,681 @@
+<!DOCTYPE html>
+<html lang="ar" dir="rtl">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>إدارة الموظفين - قائمة الموظفين</title>
+    <link rel="stylesheet" href="css/styles.css">
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.0.0/css/all.min.css">
+</head>
+<body>
+    <!-- القائمة الجانبية -->
+    <div class="sidebar">
+        <div class="sidebar-header">
+            <h2>نظام إدارة الموظفين</h2>
+        </div>
+        <div class="sidebar-menu">
+            <ul>
+                <li><a href="index.html"><i class="fas fa-home"></i> الرئيسية</a></li>
+                <li class="active"><a href="employees.html"><i class="fas fa-users"></i> الموظفين</a></li>
+                <li><a href="#search-section"><i class="fas fa-filter"></i> البحث المتقدم</a></li>
+                <li><a href="reports.html"><i class="fas fa-chart-bar"></i> التقارير</a></li>
+                <li><a href="settings.html"><i class="fas fa-cog"></i> الإعدادات</a></li>
+            </ul>
+        </div>
+    </div>
+
+    <!-- المحتوى الرئيسي -->
+    <div class="main-content">
+        <!-- شريط العنوان -->
+        <div class="header">
+            <div class="header-left">
+                <button id="sidebar-toggle" class="sidebar-toggle">
+                    <i class="fas fa-bars"></i>
+                </button>
+                <h2>إدارة الموظفين</h2>
+            </div>
+            <div class="header-right">
+                <div class="user-info">
+                    <span>مرحباً، المدير</span>
+                    <a href="#" class="logout-btn"><i class="fas fa-sign-out-alt"></i> تسجيل الخروج</a>
+                </div>
+            </div>
+        </div>
+
+        <!-- محتوى الصفحة -->
+        <div class="content">
+            <!-- أدوات التحكم -->
+            <div class="control-panel">
+                <div class="search-box">
+                    <i class="fas fa-search"></i>
+                    <input type="text" id="searchInput" placeholder="ابحث عن موظف...">
+                </div>
+                <div class="action-buttons">
+                    <button id="import-employees-btn" class="btn btn-info">
+                        <i class="fas fa-file-import"></i> استيراد
+                    </button>
+                    <button id="export-employees-btn" class="btn btn-info">
+                        <i class="fas fa-file-export"></i> تصدير
+                    </button>
+                    <button id="delete-all-btn" class="btn btn-danger">
+                        <i class="fas fa-trash-alt"></i> مسح جميع الموظفين
+                    </button>
+                    <a href="add-employee.html" class="btn btn-primary">
+                        <i class="fas fa-plus"></i> إضافة موظف
+                    </a>
+                </div>
+            </div>
+
+            <!-- قسم البحث المتقدم -->
+            <div class="search-section">
+                <div class="search-header">
+                    <h3><i class="fas fa-search"></i> البحث المتقدم</h3>
+                    <button class="btn-toggle" onclick="toggleSearchSection()">
+                        <i class="fas fa-chevron-down"></i>
+                    </button>
+                </div>
+                <div class="search-filters" id="searchFilters">
+                    <div class="filter-row">
+                        <div class="filter-group">
+                            <label>الاسم</label>
+                            <input type="text" id="searchName" placeholder="بحث بالاسم...">
+                        </div>
+                        <div class="filter-group">
+                            <label>الإدارة</label>
+                            <input type="text" id="searchDepartment" placeholder="بحث بالإدارة...">
+                        </div>
+                        <div class="filter-group">
+                            <label>الوظيفة</label>
+                            <input type="text" id="searchJobTitle" placeholder="بحث بالوظيفة...">
+                        </div>
+                    </div>
+                    <div class="filter-row">
+                        <div class="filter-group">
+                            <label>المؤهل</label>
+                            <input type="text" id="searchQualification" placeholder="بحث بالمؤهل...">
+                        </div>
+                        <div class="filter-group">
+                            <label>الحالة الاجتماعية</label>
+                            <input type="text" id="searchMaritalStatus" placeholder="بحث بالحالة الاجتماعية...">
+                        </div>
+                        <div class="filter-group">
+                            <label>التأمين التكافلي</label>
+                            <select id="searchInsurance">
+                                <option value="">الكل</option>
+                                <option value="yes">نعم</option>
+                                <option value="no">لا</option>
+                            </select>
+                        </div>
+                    </div>
+                    <div class="filter-row">
+                        <div class="filter-group">
+                            <label>تاريخ التعيين من</label>
+                            <input type="date" id="searchHireDateFrom">
+                        </div>
+                        <div class="filter-group">
+                            <label>تاريخ التعيين إلى</label>
+                            <input type="date" id="searchHireDateTo">
+                        </div>
+                        <div class="filter-group">
+                            <label>ذوي الهمم</label>
+                            <select id="searchSpecialNeeds">
+                                <option value="">الكل</option>
+                                <option value="yes">نعم</option>
+                                <option value="no">لا</option>
+                            </select>
+                        </div>
+                    </div>
+                    <div class="filter-actions">
+                        <button class="btn btn-primary" onclick="applyFilters()">
+                            <i class="fas fa-search"></i> بحث
+                        </button>
+                        <button class="btn btn-secondary" onclick="resetFilters()">
+                            <i class="fas fa-redo"></i> إعادة تعيين
+                        </button>
+                    </div>
+                </div>
+            </div>
+
+            <!-- جدول الموظفين -->
+            <div class="data-container">
+                <div class="table-responsive">
+                    <table class="data-table">
+                        <thead>
+                            <tr>
+                                <th>الكود</th>
+                                <th>الاسم</th>
+                                <th>الإدارة</th>
+                                <th>الوظيفة</th>
+                                <th>المؤهل</th>
+                                <th>التليفون</th>
+                                <th>تاريخ التعيين</th>
+                                <th>مدة العمل</th>
+                                <th>السن</th>
+                                <th>التأمين التكافلي</th>
+                                <th>ذوي الهمم</th>
+                                <th>الإجراءات</th>
+                            </tr>
+                        </thead>
+                        <tbody id="employeesTableBody">
+                            <!-- سيتم ملء هذا القسم ديناميكياً -->
+                        </tbody>
+                    </table>
+                </div>
+            </div>
+        </div>
+
+        <!-- نافذة استيراد الموظفين -->
+        <div id="import-modal" class="modal">
+            <div class="modal-content">
+                <div class="modal-header">
+                    <h3>استيراد الموظفين</h3>
+                    <button class="modal-close"><i class="fas fa-times"></i></button>
+                </div>
+                <div class="modal-body">
+                    <div class="import-options">
+                        <button id="download-template-btn" class="btn btn-info">
+                            <i class="fas fa-download"></i> تحميل قالب الاستيراد
+                        </button>
+                        <div class="file-upload">
+                            <label for="import-file" class="btn btn-secondary">
+                                <i class="fas fa-upload"></i> اختيار ملف
+                            </label>
+                            <input type="file" id="import-file" accept=".xlsx,.xls" hidden>
+                            <span id="selected-file-name">لم يتم اختيار ملف</span>
+                        </div>
+                    </div>
+                    <div class="import-progress" style="display: none;">
+                        <progress id="import-progress" value="0" max="100"></progress>
+                        <span id="import-progress-text">0%</span>
+                    </div>
+                </div>
+                <div class="modal-footer">
+                    <button class="btn btn-secondary modal-close-btn">إلغاء</button>
+                    <button id="start-import-btn" class="btn btn-primary">بدء الاستيراد</button>
+                </div>
+            </div>
+        </div>
+
+        <!-- نافذة تصدير الموظفين -->
+        <div id="export-modal" class="modal">
+            <div class="modal-content">
+                <div class="modal-header">
+                    <h3>تصدير الموظفين</h3>
+                    <button class="modal-close"><i class="fas fa-times"></i></button>
+                </div>
+                <div class="modal-body">
+                    <div class="export-options">
+                        <div class="export-scope">
+                            <h4>نطاق التصدير</h4>
+                            <div class="radio-group">
+                                <label>
+                                    <input type="radio" name="export-scope" value="all" checked>
+                                    جميع الموظفين
+                                </label>
+                                <label>
+                                    <input type="radio" name="export-scope" value="active">
+                                    الموظفين النشطين فقط
+                                </label>
+                                <label>
+                                    <input type="radio" name="export-scope" value="inactive">
+                                    الموظفين غير النشطين فقط
+                                </label>
+                            </div>
+                        </div>
+                        <div class="export-format">
+                            <h4>صيغة الملف</h4>
+                            <div class="radio-group">
+                                <label>
+                                    <input type="radio" name="export-format" value="xlsx" checked>
+                                    Excel (.xlsx)
+                                </label>
+                                <label>
+                                    <input type="radio" name="export-format" value="csv">
+                                    CSV (.csv)
+                                </label>
+                            </div>
+                        </div>
+                        <div class="export-fields">
+                            <h4>الحقول المطلوبة</h4>
+                            <div class="checkbox-group">
+                                <label>
+                                    <input type="checkbox" name="export-fields" value="basic" checked>
+                                    البيانات الأساسية
+                                </label>
+                                <label>
+                                    <input type="checkbox" name="export-fields" value="personal" checked>
+                                    البيانات الشخصية
+                                </label>
+                                <label>
+                                    <input type="checkbox" name="export-fields" value="contact" checked>
+                                    بيانات الاتصال
+                                </label>
+                                <label>
+                                    <input type="checkbox" name="export-fields" value="official" checked>
+                                    البيانات الرسمية
+                                </label>
+                                <label>
+                                    <input type="checkbox" name="export-fields" value="salary" checked>
+                                    البيانات المالية
+                                </label>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+                <div class="modal-footer">
+                    <button class="btn btn-secondary modal-close-btn">إلغاء</button>
+                    <button id="start-export-btn" class="btn btn-primary">بدء التصدير</button>
+                </div>
+            </div>
+        </div>
+
+        <!-- نافذة تأكيد حذف جميع الموظفين -->
+        <div id="delete-all-modal" class="modal">
+            <div class="modal-content">
+                <div class="modal-header">
+                    <h3>تأكيد حذف جميع الموظفين</h3>
+                    <button class="modal-close"><i class="fas fa-times"></i></button>
+                </div>
+                <div class="modal-body">
+                    <div class="warning">
+                        <i class="fas fa-exclamation-triangle"></i>
+                        تحذير: هذا الإجراء سيؤدي إلى حذف جميع بيانات الموظفين بشكل نهائي ولا يمكن التراجع عنه.
+                    </div>
+                    <div class="confirmation-input">
+                        <label for="confirmation-text">اكتب "تأكيد" للمتابعة:</label>
+                        <input type="text" id="confirmation-text" placeholder="تأكيد">
+                    </div>
+                </div>
+                <div class="modal-footer">
+                    <button class="btn btn-secondary modal-close-btn">إلغاء</button>
+                    <button id="confirm-delete-all-btn" class="btn btn-danger" disabled>تأكيد الحذف</button>
+                </div>
+            </div>
+        </div>
+
+        <!-- تذييل الصفحة -->
+        <div class="footer">
+            <p>جميع الحقوق محفوظة &copy; 2025 - نظام إدارة الموظفين</p>
+        </div>
+    </div>
+
+    <!-- سكريبت قاعدة البيانات -->
+    <script src="js/database.js"></script>
+    <!-- سكريبت صفحة الموظفين -->
+    <script src="js/employees.js"></script>
+    <!-- سكريبت مكتبة Excel -->
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/xlsx/0.18.5/xlsx.full.min.js"></script>
+
+    <style>
+    /* تنسيق الجدول */
+    .data-table {
+        width: 100%;
+        border-collapse: collapse;
+        margin-top: 20px;
+        background-color: #fff;
+        box-shadow: 0 1px 3px rgba(0, 0, 0, 0.1);
+    }
+
+    .data-table th,
+    .data-table td {
+        padding: 12px 15px;
+        text-align: right;
+        border-bottom: 1px solid #eee;
+    }
+
+    .data-table th {
+        background-color: #f8f9fa;
+        font-weight: 600;
+        color: #333;
+        white-space: nowrap;
+    }
+
+    .data-table tbody tr:hover {
+        background-color: #f8f9fa;
+    }
+
+    .data-table td.actions {
+        white-space: nowrap;
+        text-align: center;
+    }
+
+    /* تنسيق الأزرار */
+    .btn-icon {
+        padding: 6px;
+        margin: 0 2px;
+        border: none;
+        border-radius: 4px;
+        cursor: pointer;
+        transition: all 0.3s ease;
+    }
+
+    .btn-icon.view-btn {
+        background-color: #17a2b8;
+        color: white;
+    }
+
+    .btn-icon.edit-btn {
+        background-color: #ffc107;
+        color: #000;
+    }
+
+    .btn-icon.delete-btn {
+        background-color: #dc3545;
+        color: white;
+    }
+
+    .btn-icon:hover {
+        opacity: 0.8;
+        transform: scale(1.1);
+    }
+
+    /* تنسيق الحالة */
+    .status-badge {
+        padding: 4px 8px;
+        border-radius: 12px;
+        font-size: 0.85em;
+        font-weight: 500;
+    }
+
+    .status-active {
+        background-color: #28a745;
+        color: white;
+    }
+
+    .status-inactive {
+        background-color: #dc3545;
+        color: white;
+    }
+
+    /* تنسيق الجدول المتجاوب */
+    .table-responsive {
+        overflow-x: auto;
+        -webkit-overflow-scrolling: touch;
+    }
+
+    @media (max-width: 768px) {
+        .data-table th,
+        .data-table td {
+            padding: 8px 10px;
+            font-size: 0.9em;
+        }
+        
+        .btn-icon {
+            padding: 4px;
+            margin: 0 1px;
+        }
+        
+        .btn-icon i {
+            font-size: 0.9em;
+        }
+    }
+
+    /* تنسيق القيم الفارغة */
+    .data-table td:empty::before {
+        content: "-";
+        color: #999;
+    }
+
+    /* تنسيق التواريخ والأرقام */
+    .data-table td[data-type="date"],
+    .data-table td[data-type="number"] {
+        font-family: "Courier New", monospace;
+        direction: ltr;
+        text-align: left;
+    }
+
+    /* تنسيق الحالة (نعم/لا) */
+    .data-table td[data-type="boolean"] {
+        text-align: center;
+    }
+
+    .data-table td[data-type="boolean"].yes {
+        color: #28a745;
+    }
+
+    .data-table td[data-type="boolean"].no {
+        color: #dc3545;
+    }
+
+    .search-section {
+        background: #fff;
+        border-radius: 8px;
+        box-shadow: 0 2px 4px rgba(0,0,0,0.1);
+        margin-bottom: 20px;
+        padding: 15px;
+    }
+
+    .search-header {
+        display: flex;
+        justify-content: space-between;
+        align-items: center;
+        margin-bottom: 15px;
+    }
+
+    .search-header h3 {
+        margin: 0;
+        color: #2c3e50;
+        font-size: 1.2rem;
+    }
+
+    .btn-toggle {
+        background: none;
+        border: none;
+        color: #666;
+        cursor: pointer;
+        padding: 5px;
+    }
+
+    .search-filters {
+        display: none;
+        padding: 15px;
+        background: #f8f9fa;
+        border-radius: 6px;
+    }
+
+    .search-filters.active {
+        display: block;
+    }
+
+    .filter-row {
+        display: flex;
+        gap: 15px;
+        margin-bottom: 15px;
+    }
+
+    .filter-group {
+        flex: 1;
+    }
+
+    .filter-group label {
+        display: block;
+        margin-bottom: 5px;
+        color: #666;
+        font-size: 0.9rem;
+    }
+
+    .filter-group input,
+    .filter-group select {
+        width: 100%;
+        padding: 8px;
+        border: 1px solid #ddd;
+        border-radius: 4px;
+        font-size: 0.9rem;
+    }
+
+    .filter-actions {
+        display: flex;
+        gap: 10px;
+        justify-content: flex-end;
+        margin-top: 20px;
+    }
+
+    .btn {
+        padding: 8px 15px;
+        border: none;
+        border-radius: 4px;
+        cursor: pointer;
+        font-size: 0.9rem;
+        display: flex;
+        align-items: center;
+        gap: 5px;
+    }
+
+    .btn-primary {
+        background: #4F81BD;
+        color: white;
+    }
+
+    .btn-secondary {
+        background: #6c757d;
+        color: white;
+    }
+
+    .btn:hover {
+        opacity: 0.9;
+    }
+
+    @media (max-width: 768px) {
+        .filter-row {
+            flex-direction: column;
+            gap: 10px;
+        }
+    }
+    </style>
+
+    <script>
+    // تحديث دالة تحميل الموظفين
+    function loadEmployees() {
+        const employees = JSON.parse(localStorage.getItem('employees')) || [];
+        const tableBody = document.getElementById('employeesTableBody');
+        
+        // تفريغ الجدول
+        tableBody.innerHTML = '';
+        
+        // إضافة كل موظف إلى الجدول
+        employees.forEach(employee => {
+            const row = document.createElement('tr');
+            row.innerHTML = `
+                <td>${employee.employeeCode || '-'}</td>
+                <td>${employee.fullName}</td>
+                <td>${employee.department || '-'}</td>
+                <td>${employee.jobTitle || '-'}</td>
+                <td>${employee.qualification || '-'}</td>
+                <td data-type="number">${employee.phone || '-'}</td>
+                <td data-type="date">${formatDate(employee.hireDate)}</td>
+                <td>${calculateWorkDuration(employee.hireDate)}</td>
+                <td data-type="number">${calculateAge(employee.birthDate)}</td>
+                <td data-type="boolean" class="${employee.insuranceType === 'yes' ? 'yes' : 'no'}">
+                    ${employee.insuranceType === 'yes' ? 'نعم' : 'لا'}
+                </td>
+                <td data-type="boolean" class="${employee.specialNeeds === 'yes' ? 'yes' : 'no'}">
+                    ${employee.specialNeeds === 'yes' ? 'نعم' : 'لا'}
+                </td>
+                <td class="actions">
+                    <button class="btn-icon view-btn" onclick="viewEmployee(${employee.id})" title="عرض">
+                        <i class="fas fa-eye"></i>
+                    </button>
+                    <button class="btn-icon edit-btn" onclick="editEmployee(${employee.id})" title="تعديل">
+                        <i class="fas fa-edit"></i>
+                    </button>
+                    <button class="btn-icon delete-btn" onclick="deleteEmployee(${employee.id})" title="حذف">
+                        <i class="fas fa-trash"></i>
+                    </button>
+                </td>
+            `;
+            tableBody.appendChild(row);
+        });
+    }
+
+    function toggleSearchSection() {
+        const filters = document.getElementById('searchFilters');
+        const icon = document.querySelector('.btn-toggle i');
+        filters.classList.toggle('active');
+        icon.classList.toggle('fa-chevron-down');
+        icon.classList.toggle('fa-chevron-up');
+    }
+
+    function applyFilters() {
+        const filters = {
+            name: document.getElementById('searchName').value.toLowerCase(),
+            department: document.getElementById('searchDepartment').value.toLowerCase(),
+            jobTitle: document.getElementById('searchJobTitle').value.toLowerCase(),
+            qualification: document.getElementById('searchQualification').value.toLowerCase(),
+            maritalStatus: document.getElementById('searchMaritalStatus').value.toLowerCase(),
+            insurance: document.getElementById('searchInsurance').value,
+            hireDateFrom: document.getElementById('searchHireDateFrom').value,
+            hireDateTo: document.getElementById('searchHireDateTo').value,
+            specialNeeds: document.getElementById('searchSpecialNeeds').value
+        };
+
+        const employees = JSON.parse(localStorage.getItem('employees')) || [];
+        const filteredEmployees = employees.filter(employee => {
+            return (
+                (!filters.name || employee.fullName.toLowerCase().includes(filters.name)) &&
+                (!filters.department || (employee.department && employee.department.toLowerCase().includes(filters.department))) &&
+                (!filters.jobTitle || (employee.jobTitle && employee.jobTitle.toLowerCase().includes(filters.jobTitle))) &&
+                (!filters.qualification || (employee.qualification && employee.qualification.toLowerCase().includes(filters.qualification))) &&
+                (!filters.maritalStatus || (employee.maritalStatus && employee.maritalStatus.toLowerCase().includes(filters.maritalStatus))) &&
+                (!filters.insurance || employee.insuranceType === filters.insurance) &&
+                (!filters.hireDateFrom || new Date(employee.hireDate) >= new Date(filters.hireDateFrom)) &&
+                (!filters.hireDateTo || new Date(employee.hireDate) <= new Date(filters.hireDateTo)) &&
+                (!filters.specialNeeds || employee.specialNeeds === filters.specialNeeds)
+            );
+        });
+
+        // تحديث الجدول بالنتائج المفلترة
+        const tableBody = document.getElementById('employeesTableBody');
+        tableBody.innerHTML = '';
+        
+        filteredEmployees.forEach(employee => {
+            const row = document.createElement('tr');
+            row.innerHTML = `
+                <td>${employee.employeeCode || '-'}</td>
+                <td>${employee.fullName}</td>
+                <td>${employee.department || '-'}</td>
+                <td>${employee.jobTitle || '-'}</td>
+                <td>${employee.qualification || '-'}</td>
+                <td>${employee.phone || '-'}</td>
+                <td>${formatDate(employee.hireDate)}</td>
+                <td>${calculateWorkDuration(employee.hireDate)}</td>
+                <td>${calculateAge(employee.birthDate)}</td>
+                <td>${employee.insuranceType === 'yes' ? 'نعم' : 'لا'}</td>
+                <td>${employee.specialNeeds === 'yes' ? 'نعم' : 'لا'}</td>
+                <td class="actions">
+                    <button class="btn-icon view-btn" onclick="viewEmployee(${employee.id})" title="عرض">
+                        <i class="fas fa-eye"></i>
+                    </button>
+                    <button class="btn-icon edit-btn" onclick="editEmployee(${employee.id})" title="تعديل">
+                        <i class="fas fa-edit"></i>
+                    </button>
+                    <button class="btn-icon delete-btn" onclick="deleteEmployee(${employee.id})" title="حذف">
+                        <i class="fas fa-trash"></i>
+                    </button>
+                </td>
+            `;
+            tableBody.appendChild(row);
+        });
+
+        // عرض عدد النتائج
+        showNotification(`تم العثور على ${filteredEmployees.length} نتيجة`, 'info');
+    }
+
+    function resetFilters() {
+        // إعادة تعيين جميع حقول البحث
+        document.getElementById('searchName').value = '';
+        document.getElementById('searchDepartment').value = '';
+        document.getElementById('searchJobTitle').value = '';
+        document.getElementById('searchQualification').value = '';
+        document.getElementById('searchMaritalStatus').value = '';
+        document.getElementById('searchInsurance').value = '';
+        document.getElementById('searchHireDateFrom').value = '';
+        document.getElementById('searchHireDateTo').value = '';
+        document.getElementById('searchSpecialNeeds').value = '';
+
+        // إعادة تحميل جميع الموظفين
+        loadEmployees();
+        showNotification('تم إعادة تعيين الفلاتر', 'info');
+    }
+    </script>
+</body>
+</html>

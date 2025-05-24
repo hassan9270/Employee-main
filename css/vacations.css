@@ -1,0 +1,798 @@
+/* ===== تنسيق صفحة الإجازات ===== */
+:root {
+    /* ألوان إضافية للإجازات */
+    --vacation-primary: #3f51b5;
+    --vacation-secondary: #ff4081;
+    --vacation-success: #4caf50;
+    --vacation-warning: #ff9800;
+    --vacation-danger: #f44336;
+    --vacation-info: #03a9f4;
+    --vacation-light: #f5f5f5;
+    --vacation-dark: #212121;
+    
+    /* ألوان حالات الإجازات */
+    --status-pending: #ff9800;
+    --status-approved: #4caf50;
+    --status-rejected: #f44336;
+    --status-cancelled: #9e9e9e;
+}
+
+/* تبويبات الإجازات */
+.vacations-tabs {
+    display: flex;
+    flex-wrap: wrap;
+    gap: 10px;
+    margin-bottom: 25px;
+    background-color: white;
+    padding: 15px;
+    border-radius: var(--border-radius);
+    box-shadow: var(--box-shadow);
+    position: relative;
+    overflow: hidden;
+}
+
+.vacations-tabs::before {
+    content: '';
+    position: absolute;
+    top: 0;
+    right: 0;
+    width: 100%;
+    height: 3px;
+    background: linear-gradient(to left, var(--vacation-primary), var(--vacation-secondary));
+}
+
+.tab-btn {
+    padding: 12px 20px;
+    background-color: var(--light-color);
+    border: none;
+    border-radius: var(--border-radius);
+    font-family: var(--font-primary);
+    font-size: 1rem;
+    font-weight: 500;
+    color: var(--dark-gray);
+    cursor: pointer;
+    transition: all 0.3s ease;
+    display: flex;
+    align-items: center;
+    gap: 10px;
+    position: relative;
+    overflow: hidden;
+}
+
+.tab-btn::after {
+    content: '';
+    position: absolute;
+    bottom: 0;
+    right: 0;
+    width: 0;
+    height: 3px;
+    background-color: var(--vacation-secondary);
+    transition: width 0.3s ease;
+}
+
+.tab-btn:hover {
+    background-color: rgba(63, 81, 181, 0.1);
+    color: var(--vacation-primary);
+    transform: translateY(-2px);
+}
+
+.tab-btn:hover::after {
+    width: 100%;
+}
+
+.tab-btn.active {
+    background-color: var(--vacation-primary);
+    color: white;
+    box-shadow: 0 4px 8px rgba(63, 81, 181, 0.3);
+}
+
+.tab-btn.active::after {
+    width: 100%;
+    background-color: var(--vacation-secondary);
+}
+
+.tab-btn i {
+    font-size: 1.2rem;
+    transition: transform 0.3s ease;
+}
+
+.tab-btn:hover i {
+    transform: scale(1.2);
+}
+
+.badge {
+    display: inline-flex;
+    align-items: center;
+    justify-content: center;
+    min-width: 20px;
+    height: 20px;
+    padding: 0 6px;
+    border-radius: 10px;
+    background-color: var(--vacation-secondary);
+    color: white;
+    font-size: 0.75rem;
+    font-weight: 600;
+    margin-right: 5px;
+    transition: all 0.3s ease;
+}
+
+.tab-btn:hover .badge {
+    transform: scale(1.1);
+}
+
+/* محتوى التبويبات */
+.tab-content {
+    position: relative;
+}
+
+.tab-pane {
+    display: none;
+    animation: fadeIn 0.5s ease forwards;
+}
+
+.tab-pane.active {
+    display: block;
+}
+
+/* إحصائيات الإجازات */
+.vacations-stats {
+    display: grid;
+    grid-template-columns: repeat(auto-fit, minmax(250px, 1fr));
+    gap: 20px;
+    margin-bottom: 30px;
+}
+
+.stat-card {
+    background-color: white;
+    border-radius: var(--border-radius);
+    box-shadow: var(--box-shadow);
+    padding: 20px;
+    display: flex;
+    align-items: center;
+    transition: all 0.3s ease;
+    position: relative;
+    overflow: hidden;
+    border-bottom: 3px solid transparent;
+}
+
+.stat-card::before {
+    content: '';
+    position: absolute;
+    top: 0;
+    right: 0;
+    width: 100%;
+    height: 3px;
+    background: linear-gradient(to left, var(--vacation-primary), var(--vacation-secondary));
+}
+
+.stat-card:hover {
+    transform: translateY(-5px);
+    box-shadow: var(--box-shadow-lg);
+}
+
+.stat-icon {
+    width: 60px;
+    height: 60px;
+    border-radius: 50%;
+    background: linear-gradient(135deg, var(--vacation-primary), var(--vacation-secondary));
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    margin-left: 15px;
+    box-shadow: 0 4px 10px rgba(63, 81, 181, 0.3);
+    transition: all 0.3s ease;
+}
+
+.stat-card:hover .stat-icon {
+    transform: rotate(15deg) scale(1.1);
+}
+
+.stat-icon i {
+    font-size: 1.5rem;
+    color: white;
+}
+
+.stat-info h4 {
+    font-size: 1rem;
+    color: var(--medium-gray);
+    margin-bottom: 5px;
+}
+
+.stat-info p {
+    font-size: 1.5rem;
+    font-weight: 700;
+    color: var(--dark-color);
+}
+
+/* فلاتر الإجازات */
+.filter-panel {
+    display: flex;
+    flex-wrap: wrap;
+    gap: 15px;
+    margin-bottom: 25px;
+    background-color: white;
+    padding: 20px;
+    border-radius: var(--border-radius);
+    box-shadow: var(--box-shadow);
+    align-items: flex-end;
+}
+
+.filter-group {
+    flex: 1;
+    min-width: 200px;
+}
+
+.filter-group label {
+    display: block;
+    margin-bottom: 8px;
+    font-weight: 500;
+    color: var(--dark-gray);
+}
+
+.filter-group select,
+.filter-group input {
+    width: 100%;
+    padding: 10px 15px;
+    border: 1px solid var(--border-color);
+    border-radius: var(--border-radius);
+    font-family: var(--font-primary);
+    font-size: 1rem;
+    transition: all 0.3s ease;
+}
+
+.filter-group select:focus,
+.filter-group input:focus {
+    outline: none;
+    border-color: var(--vacation-primary);
+    box-shadow: 0 0 0 3px rgba(63, 81, 181, 0.2);
+}
+
+/* حالات الإجازات */
+.status-badge {
+    display: inline-flex;
+    align-items: center;
+    justify-content: center;
+    padding: 5px 12px;
+    border-radius: 20px;
+    font-size: 0.85rem;
+    font-weight: 500;
+    transition: all 0.3s ease;
+}
+
+.status-badge.pending {
+    background-color: rgba(255, 152, 0, 0.2);
+    color: var(--status-pending);
+}
+
+.status-badge.approved {
+    background-color: rgba(76, 175, 80, 0.2);
+    color: var(--status-approved);
+}
+
+.status-badge.rejected {
+    background-color: rgba(244, 67, 54, 0.2);
+    color: var(--status-rejected);
+}
+
+.status-badge.cancelled {
+    background-color: rgba(158, 158, 158, 0.2);
+    color: var(--status-cancelled);
+}
+
+/* نموذج طلب الإجازة */
+.form-container {
+    background-color: white;
+    border-radius: var(--border-radius);
+    box-shadow: var(--box-shadow);
+    padding: 30px;
+    margin-bottom: 30px;
+    position: relative;
+    overflow: hidden;
+}
+
+.form-container::before {
+    content: '';
+    position: absolute;
+    top: 0;
+    right: 0;
+    width: 100%;
+    height: 3px;
+    background: linear-gradient(to left, var(--vacation-primary), var(--vacation-secondary));
+}
+
+.form-row {
+    display: flex;
+    flex-wrap: wrap;
+    gap: 20px;
+    margin-bottom: 20px;
+}
+
+.form-group {
+    flex: 1;
+    min-width: 250px;
+}
+
+.form-group.full-width {
+    flex-basis: 100%;
+}
+
+.form-group label {
+    display: block;
+    margin-bottom: 8px;
+    font-weight: 500;
+    color: var(--dark-gray);
+}
+
+.form-group .required {
+    color: var(--vacation-danger);
+    margin-right: 4px;
+}
+
+.form-group input,
+.form-group select,
+.form-group textarea {
+    width: 100%;
+    padding: 12px 15px;
+    border: 1px solid var(--border-color);
+    border-radius: var(--border-radius);
+    font-family: var(--font-primary);
+    font-size: 1rem;
+    transition: all 0.3s ease;
+}
+
+.form-group input:focus,
+.form-group select:focus,
+.form-group textarea:focus {
+    outline: none;
+    border-color: var(--vacation-primary);
+    box-shadow: 0 0 0 3px rgba(63, 81, 181, 0.2);
+}
+
+.form-group textarea {
+    resize: vertical;
+    min-height: 100px;
+}
+
+.file-upload {
+    display: flex;
+    align-items: center;
+    gap: 10px;
+}
+
+.file-upload input[type="file"] {
+    display: none;
+}
+
+.file-name {
+    flex: 1;
+    padding: 10px;
+    background-color: var(--light-color);
+    border-radius: var(--border-radius);
+    white-space: nowrap;
+    overflow: hidden;
+    text-overflow: ellipsis;
+}
+
+.form-actions {
+    display: flex;
+    justify-content: flex-end;
+    gap: 15px;
+    margin-top: 30px;
+}
+
+/* نافذة عرض تفاصيل الإجازة */
+.vacation-details {
+    background-color: white;
+    border-radius: var(--border-radius);
+    padding: 25px;
+    margin-bottom: 30px;
+}
+
+.vacation-details-header {
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+    margin-bottom: 20px;
+    padding-bottom: 15px;
+    border-bottom: 1px solid var(--border-color);
+}
+
+.vacation-details-header h3 {
+    font-size: 1.3rem;
+    font-weight: 600;
+    color: var(--vacation-primary);
+}
+
+.vacation-details-body {
+    display: grid;
+    grid-template-columns: repeat(auto-fill, minmax(250px, 1fr));
+    gap: 20px;
+    margin-bottom: 25px;
+}
+
+.vacation-detail-item {
+    padding: 15px;
+    background-color: var(--light-color);
+    border-radius: var(--border-radius);
+    transition: all 0.3s ease;
+}
+
+.vacation-detail-item:hover {
+    background-color: rgba(63, 81, 181, 0.05);
+    transform: translateY(-3px);
+}
+
+.vacation-detail-label {
+    display: block;
+    font-size: 0.9rem;
+    color: var(--medium-gray);
+    margin-bottom: 5px;
+}
+
+.vacation-detail-value {
+    font-weight: 500;
+    color: var(--dark-color);
+}
+
+.vacation-reason {
+    grid-column: 1 / -1;
+}
+
+.vacation-actions {
+    display: flex;
+    justify-content: flex-end;
+    gap: 15px;
+    margin-top: 20px;
+    padding-top: 20px;
+    border-top: 1px solid var(--border-color);
+}
+
+/* تأثيرات الحركة الإضافية */
+@keyframes fadeInUp {
+    from {
+        opacity: 0;
+        transform: translateY(20px);
+    }
+    to {
+        opacity: 1;
+        transform: translateY(0);
+    }
+}
+
+@keyframes fadeInRight {
+    from {
+        opacity: 0;
+        transform: translateX(-20px);
+    }
+    to {
+        opacity: 1;
+        transform: translateX(0);
+    }
+}
+
+@keyframes fadeInLeft {
+    from {
+        opacity: 0;
+        transform: translateX(20px);
+    }
+    to {
+        opacity: 1;
+        transform: translateX(0);
+    }
+}
+
+@keyframes scaleIn {
+    from {
+        opacity: 0;
+        transform: scale(0.9);
+    }
+    to {
+        opacity: 1;
+        transform: scale(1);
+    }
+}
+
+.animate-fade-in-up {
+    animation: fadeInUp 0.5s ease forwards;
+}
+
+.animate-fade-in-right {
+    animation: fadeInRight 0.5s ease forwards;
+}
+
+.animate-fade-in-left {
+    animation: fadeInLeft 0.5s ease forwards;
+}
+
+.animate-scale-in {
+    animation: scaleIn 0.5s ease forwards;
+}
+
+/* تأخيرات الحركة */
+.delay-100 {
+    animation-delay: 0.1s;
+}
+
+.delay-200 {
+    animation-delay: 0.2s;
+}
+
+.delay-300 {
+    animation-delay: 0.3s;
+}
+
+.delay-400 {
+    animation-delay: 0.4s;
+}
+
+.delay-500 {
+    animation-delay: 0.5s;
+}
+
+/* تنسيق الجداول */
+.data-table {
+    width: 100%;
+    border-collapse: collapse;
+    border-radius: var(--border-radius);
+    overflow: hidden;
+    box-shadow: var(--box-shadow);
+}
+
+.data-table thead th {
+    background: linear-gradient(to left, rgba(63, 81, 181, 0.1), rgba(63, 81, 181, 0.05));
+    font-weight: 600;
+    border-bottom: 2px solid var(--vacation-primary);
+    color: var(--vacation-primary);
+    position: sticky;
+    top: 0;
+    z-index: 10;
+    padding: 15px 20px;
+    text-align: right;
+}
+
+.data-table tbody tr {
+    border-bottom: 1px solid var(--border-color);
+    transition: all 0.3s ease;
+}
+
+.data-table tbody tr:last-child {
+    border-bottom: none;
+}
+
+.data-table tbody tr:hover {
+    background-color: rgba(63, 81, 181, 0.05);
+    transform: translateY(-2px);
+    box-shadow: 0 4px 8px rgba(0, 0, 0, 0.05);
+}
+
+.data-table tbody td {
+    padding: 15px 20px;
+    text-align: right;
+}
+
+.data-table .actions {
+    display: flex;
+    gap: 8px;
+    justify-content: center;
+}
+
+/* تنسيق الأزرار */
+.btn-icon {
+    width: 36px;
+    height: 36px;
+    border-radius: 50%;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    border: none;
+    cursor: pointer;
+    transition: all 0.3s ease;
+    background-color: var(--light-color);
+    color: var(--dark-gray);
+    position: relative;
+    overflow: hidden;
+}
+
+.btn-icon::after {
+    content: '';
+    position: absolute;
+    top: 50%;
+    left: 50%;
+    width: 5px;
+    height: 5px;
+    background: rgba(255, 255, 255, 0.5);
+    opacity: 0;
+    border-radius: 100%;
+    transform: scale(1, 1) translate(-50%);
+    transform-origin: 50% 50%;
+}
+
+.btn-icon:focus:not(:active)::after {
+    animation: ripple 1s ease-out;
+}
+
+.btn-icon:hover {
+    transform: translateY(-3px);
+    box-shadow: 0 4px 8px rgba(0, 0, 0, 0.1);
+}
+
+.view-vacation-btn:hover {
+    background-color: rgba(3, 169, 244, 0.2);
+    color: var(--vacation-info);
+}
+
+.approve-btn:hover {
+    background-color: rgba(76, 175, 80, 0.2);
+    color: var(--vacation-success);
+}
+
+.reject-btn:hover {
+    background-color: rgba(244, 67, 54, 0.2);
+    color: var(--vacation-danger);
+}
+
+.cancel-btn:hover {
+    background-color: rgba(158, 158, 158, 0.2);
+    color: var(--dark-gray);
+}
+
+/* تنسيق الأزرار الرئيسية */
+.btn {
+    display: inline-flex;
+    align-items: center;
+    justify-content: center;
+    padding: 12px 24px;
+    border-radius: var(--border-radius);
+    font-weight: 500;
+    cursor: pointer;
+    transition: all 0.3s ease;
+    border: none;
+    font-size: 1rem;
+    letter-spacing: 0.5px;
+    position: relative;
+    overflow: hidden;
+}
+
+.btn::after {
+    content: '';
+    position: absolute;
+    top: 50%;
+    left: 50%;
+    width: 5px;
+    height: 5px;
+    background: rgba(255, 255, 255, 0.5);
+    opacity: 0;
+    border-radius: 100%;
+    transform: scale(1, 1) translate(-50%);
+    transform-origin: 50% 50%;
+}
+
+.btn:focus:not(:active)::after {
+    animation: ripple 1s ease-out;
+}
+
+.btn i {
+    margin-left: 10px;
+    font-size: 1.1rem;
+    transition: transform 0.3s ease;
+}
+
+.btn:hover i {
+    transform: translateX(-5px);
+}
+
+.btn-primary {
+    background: linear-gradient(135deg, var(--vacation-primary), var(--primary-dark));
+    color: white;
+    box-shadow: 0 4px 6px rgba(63, 81, 181, 0.25);
+}
+
+.btn-primary:hover {
+    background: linear-gradient(135deg, var(--primary-dark), var(--vacation-primary));
+    box-shadow: 0 6px 10px rgba(63, 81, 181, 0.35);
+    transform: translateY(-2px);
+}
+
+.btn-primary:active {
+    transform: translateY(0);
+    box-shadow: 0 2px 4px rgba(63, 81, 181, 0.2);
+}
+
+.btn-secondary {
+    background-color: var(--light-color);
+    color: var(--dark-gray);
+}
+
+.btn-secondary:hover {
+    background-color: var(--light-gray);
+    color: var(--dark-color);
+    transform: translateY(-2px);
+}
+
+.btn-secondary:active {
+    transform: translateY(0);
+}
+
+.btn-success {
+    background: linear-gradient(135deg, var(--vacation-success), var(--success-dark));
+    color: white;
+    box-shadow: 0 4px 6px rgba(76, 175, 80, 0.25);
+}
+
+.btn-success:hover {
+    background: linear-gradient(135deg, var(--success-dark), var(--vacation-success));
+    box-shadow: 0 6px 10px rgba(76, 175, 80, 0.35);
+    transform: translateY(-2px);
+}
+
+.btn-danger {
+    background: linear-gradient(135deg, var(--vacation-danger), var(--danger-dark));
+    color: white;
+    box-shadow: 0 4px 6px rgba(244, 67, 54, 0.25);
+}
+
+.btn-danger:hover {
+    background: linear-gradient(135deg, var(--danger-dark), var(--vacation-danger));
+    box-shadow: 0 6px 10px rgba(244, 67, 54, 0.35);
+    transform: translateY(-2px);
+}
+
+/* تنسيق للشاشات الصغيرة */
+@media (max-width: 992px) {
+    .vacations-tabs {
+        justify-content: center;
+    }
+    
+    .tab-btn {
+        flex: 1;
+        min-width: 150px;
+        justify-content: center;
+    }
+}
+
+@media (max-width: 768px) {
+    .vacations-stats {
+        grid-template-columns: 1fr;
+    }
+    
+    .filter-panel {
+        flex-direction: column;
+    }
+    
+    .filter-group {
+        width: 100%;
+    }
+    
+    .form-actions {
+        flex-direction: column;
+    }
+    
+    .form-actions .btn {
+        width: 100%;
+    }
+    
+    .vacation-details-body {
+        grid-template-columns: 1fr;
+    }
+}
+
+@media (max-width: 576px) {
+    .tab-btn {
+        padding: 10px 15px;
+        font-size: 0.9rem;
+    }
+    
+    .tab-btn i {
+        font-size: 1rem;
+    }
+    
+    .form-container {
+        padding: 20px;
+    }
+    
+    .data-table thead th,
+    .data-table tbody td {
+        padding: 12px 10px;
+        font-size: 0.9rem;
+    }
+}

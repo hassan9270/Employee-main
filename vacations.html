@@ -1,0 +1,476 @@
+<!DOCTYPE html>
+<html lang="ar" dir="rtl">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>إدارة الموظفين - الإجازات</title>
+    <link rel="stylesheet" href="css/styles.css">
+    <link rel="stylesheet" href="css/vacations.css">
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.0.0/css/all.min.css">
+</head>
+<body>
+    <!-- القائمة الجانبية -->
+    <div class="sidebar">
+        <div class="sidebar-header">
+            <h2>نظام إدارة الموظفين</h2>
+        </div>
+        <div class="sidebar-menu">
+            <ul>
+                <li><a href="index.html"><i class="fas fa-home"></i> الرئيسية</a></li>
+                <li><a href="employees.html"><i class="fas fa-users"></i> الموظفين</a></li>
+                <li><a href="departments.html"><i class="fas fa-building"></i> الأقسام</a></li>
+                <li><a href="job-titles.html"><i class="fas fa-briefcase"></i> المسميات الوظيفية</a></li>
+                <li class="active"><a href="vacations.html"><i class="fas fa-calendar-alt"></i> الإجازات</a></li>
+                <li><a href="reports.html"><i class="fas fa-chart-bar"></i> التقارير</a></li>
+                <li><a href="settings.html"><i class="fas fa-cog"></i> الإعدادات</a></li>
+            </ul>
+        </div>
+    </div>
+
+    <!-- المحتوى الرئيسي -->
+    <div class="main-content">
+        <!-- شريط العنوان -->
+        <div class="header">
+            <div class="header-left">
+                <button id="sidebar-toggle" class="sidebar-toggle">
+                    <i class="fas fa-bars"></i>
+                </button>
+                <h2>إدارة الإجازات</h2>
+            </div>
+            <div class="header-right">
+                <div class="user-info">
+                    <span>مرحباً، <span id="current-user-name">المدير</span></span>
+                    <a href="#" class="logout-btn"><i class="fas fa-sign-out-alt"></i> تسجيل الخروج</a>
+                </div>
+            </div>
+        </div>
+
+        <!-- محتوى الصفحة -->
+        <div class="content">
+            <!-- تبويبات الإجازات -->
+            <div class="vacations-tabs">
+                <button class="tab-btn active" data-tab="my-vacations">
+                    <i class="fas fa-calendar-check"></i> إجازاتي
+                </button>
+                <button class="tab-btn" data-tab="request-vacation">
+                    <i class="fas fa-calendar-plus"></i> طلب إجازة جديدة
+                </button>
+                <button class="tab-btn" data-tab="pending-approvals" id="pending-approvals-tab">
+                    <i class="fas fa-clipboard-check"></i> طلبات الموافقة
+                    <span class="badge" id="pending-count">0</span>
+                </button>
+                <button class="tab-btn" data-tab="all-vacations" id="all-vacations-tab">
+                    <i class="fas fa-calendar-alt"></i> جميع الإجازات
+                </button>
+            </div>
+
+            <!-- محتوى التبويبات -->
+            <div class="tab-content">
+                <!-- إجازاتي -->
+                <div class="tab-pane active" id="my-vacations-tab">
+                    <div class="section-header">
+                        <h3><i class="fas fa-calendar-check"></i> إجازاتي</h3>
+                    </div>
+                    <div class="vacations-stats">
+                        <div class="stat-card">
+                            <div class="stat-icon">
+                                <i class="fas fa-calendar-day"></i>
+                            </div>
+                            <div class="stat-info">
+                                <h4>الرصيد السنوي</h4>
+                                <p><span id="annual-balance">21</span> يوم</p>
+                            </div>
+                        </div>
+                        <div class="stat-card">
+                            <div class="stat-icon">
+                                <i class="fas fa-check-circle"></i>
+                            </div>
+                            <div class="stat-info">
+                                <h4>الرصيد المتبقي</h4>
+                                <p><span id="remaining-balance">15</span> يوم</p>
+                            </div>
+                        </div>
+                        <div class="stat-card">
+                            <div class="stat-icon">
+                                <i class="fas fa-calendar-minus"></i>
+                            </div>
+                            <div class="stat-info">
+                                <h4>المستخدم</h4>
+                                <p><span id="used-balance">6</span> يوم</p>
+                            </div>
+                        </div>
+                    </div>
+                    <div class="table-responsive">
+                        <table class="data-table" id="my-vacations-table">
+                            <thead>
+                                <tr>
+                                    <th>رقم الطلب</th>
+                                    <th>نوع الإجازة</th>
+                                    <th>تاريخ البداية</th>
+                                    <th>تاريخ النهاية</th>
+                                    <th>المدة</th>
+                                    <th>الحالة</th>
+                                    <th>تاريخ الطلب</th>
+                                    <th>الإجراءات</th>
+                                </tr>
+                            </thead>
+                            <tbody>
+                                <!-- سيتم ملء هذا الجدول بواسطة JavaScript -->
+                            </tbody>
+                        </table>
+                    </div>
+                </div>
+
+                <!-- طلب إجازة جديدة -->
+                <div class="tab-pane" id="request-vacation-tab">
+                    <div class="section-header">
+                        <h3><i class="fas fa-calendar-plus"></i> طلب إجازة جديدة</h3>
+                    </div>
+                    <div class="form-container">
+                        <form id="vacation-request-form">
+                            <div class="form-row">
+                                <div class="form-group">
+                                    <label for="vacation-type">نوع الإجازة <span class="required">*</span></label>
+                                    <select id="vacation-type" name="vacationType" required>
+                                        <option value="">اختر نوع الإجازة...</option>
+                                        <option value="annual">إجازة سنوية</option>
+                                        <option value="sick">إجازة مرضية</option>
+                                        <option value="emergency">إجازة طارئة</option>
+                                        <option value="unpaid">إجازة بدون راتب</option>
+                                        <option value="other">أخرى</option>
+                                    </select>
+                                </div>
+                                <div class="form-group" id="other-type-container" style="display: none;">
+                                    <label for="other-type">تحديد النوع <span class="required">*</span></label>
+                                    <input type="text" id="other-type" name="otherType" placeholder="حدد نوع الإجازة">
+                                </div>
+                            </div>
+                            <div class="form-row">
+                                <div class="form-group">
+                                    <label for="start-date">تاريخ البداية <span class="required">*</span></label>
+                                    <input type="date" id="start-date" name="startDate" required>
+                                </div>
+                                <div class="form-group">
+                                    <label for="end-date">تاريخ النهاية <span class="required">*</span></label>
+                                    <input type="date" id="end-date" name="endDate" required>
+                                </div>
+                            </div>
+                            <div class="form-row">
+                                <div class="form-group">
+                                    <label for="vacation-days">عدد الأيام</label>
+                                    <input type="number" id="vacation-days" name="days" readonly>
+                                </div>
+                                <div class="form-group">
+                                    <label for="return-date">تاريخ العودة</label>
+                                    <input type="date" id="return-date" name="returnDate" readonly>
+                                </div>
+                            </div>
+                            <div class="form-row">
+                                <div class="form-group full-width">
+                                    <label for="vacation-reason">سبب الإجازة</label>
+                                    <textarea id="vacation-reason" name="reason" rows="3" placeholder="اذكر سبب طلب الإجازة (اختياري)"></textarea>
+                                </div>
+                            </div>
+                            <div class="form-row">
+                                <div class="form-group">
+                                    <label for="contact-info">معلومات الاتصال أثناء الإجازة</label>
+                                    <input type="text" id="contact-info" name="contactInfo" placeholder="رقم الهاتف أو البريد الإلكتروني">
+                                </div>
+                                <div class="form-group">
+                                    <label for="attachment">إرفاق ملف (للإجازات المرضية)</label>
+                                    <div class="file-upload">
+                                        <input type="file" id="attachment" name="attachment">
+                                        <button type="button" class="btn btn-secondary file-upload-btn">
+                                            <i class="fas fa-upload"></i> اختر ملفاً
+                                        </button>
+                                        <span class="file-name">لم يتم اختيار ملف</span>
+                                    </div>
+                                </div>
+                            </div>
+                            <div class="form-actions">
+                                <button type="button" id="submit-vacation-request" class="btn btn-primary">
+                                    <i class="fas fa-paper-plane"></i> إرسال الطلب
+                                </button>
+                                <button type="button" id="reset-vacation-form" class="btn btn-secondary">
+                                    <i class="fas fa-undo"></i> إعادة تعيين
+                                </button>
+                            </div>
+                        </form>
+                    </div>
+                </div>
+
+                <!-- طلبات الموافقة -->
+                <div class="tab-pane" id="pending-approvals-tab">
+                    <div class="section-header">
+                        <h3><i class="fas fa-clipboard-check"></i> طلبات الموافقة</h3>
+                    </div>
+                    <div class="filter-panel">
+                        <div class="filter-group">
+                            <label for="filter-department">القسم:</label>
+                            <select id="filter-department">
+                                <option value="">جميع الأقسام</option>
+                                <!-- سيتم ملء هذه القائمة بواسطة JavaScript -->
+                            </select>
+                        </div>
+                        <div class="filter-group">
+                            <label for="filter-status">الحالة:</label>
+                            <select id="filter-status">
+                                <option value="pending" selected>قيد الانتظار</option>
+                                <option value="all">جميع الحالات</option>
+                            </select>
+                        </div>
+                        <button id="apply-filter" class="btn btn-primary">
+                            <i class="fas fa-filter"></i> تطبيق
+                        </button>
+                    </div>
+                    <div class="table-responsive">
+                        <table class="data-table" id="pending-approvals-table">
+                            <thead>
+                                <tr>
+                                    <th>رقم الطلب</th>
+                                    <th>الموظف</th>
+                                    <th>القسم</th>
+                                    <th>نوع الإجازة</th>
+                                    <th>تاريخ البداية</th>
+                                    <th>تاريخ النهاية</th>
+                                    <th>المدة</th>
+                                    <th>تاريخ الطلب</th>
+                                    <th>الإجراءات</th>
+                                </tr>
+                            </thead>
+                            <tbody>
+                                <!-- سيتم ملء هذا الجدول بواسطة JavaScript -->
+                            </tbody>
+                        </table>
+                    </div>
+                </div>
+
+                <!-- جميع الإجازات -->
+                <div class="tab-pane" id="all-vacations-tab">
+                    <div class="section-header">
+                        <h3><i class="fas fa-calendar-alt"></i> جميع الإجازات</h3>
+                    </div>
+                    <div class="filter-panel">
+                        <div class="filter-group">
+                            <label for="filter-all-department">القسم:</label>
+                            <select id="filter-all-department">
+                                <option value="">جميع الأقسام</option>
+                                <!-- سيتم ملء هذه القائمة بواسطة JavaScript -->
+                            </select>
+                        </div>
+                        <div class="filter-group">
+                            <label for="filter-all-employee">الموظف:</label>
+                            <select id="filter-all-employee">
+                                <option value="">جميع الموظفين</option>
+                                <!-- سيتم ملء هذه القائمة بواسطة JavaScript -->
+                            </select>
+                        </div>
+                        <div class="filter-group">
+                            <label for="filter-all-status">الحالة:</label>
+                            <select id="filter-all-status">
+                                <option value="">جميع الحالات</option>
+                                <option value="approved">تمت الموافقة</option>
+                                <option value="rejected">مرفوض</option>
+                                <option value="pending">قيد الانتظار</option>
+                                <option value="cancelled">ملغي</option>
+                            </select>
+                        </div>
+                        <div class="filter-group">
+                            <label for="filter-date-range">الفترة:</label>
+                            <select id="filter-date-range">
+                                <option value="all">جميع الفترات</option>
+                                <option value="current-month">الشهر الحالي</option>
+                                <option value="last-month">الشهر الماضي</option>
+                                <option value="current-year">السنة الحالية</option>
+                                <option value="custom">فترة مخصصة</option>
+                            </select>
+                        </div>
+                        <div class="filter-group date-range" style="display: none;">
+                            <label for="filter-start-date">من:</label>
+                            <input type="date" id="filter-start-date">
+                        </div>
+                        <div class="filter-group date-range" style="display: none;">
+                            <label for="filter-end-date">إلى:</label>
+                            <input type="date" id="filter-end-date">
+                        </div>
+                        <button id="apply-all-filter" class="btn btn-primary">
+                            <i class="fas fa-filter"></i> تطبيق
+                        </button>
+                        <button id="export-vacations" class="btn btn-success">
+                            <i class="fas fa-file-export"></i> تصدير
+                        </button>
+                    </div>
+                    <div class="table-responsive">
+                        <table class="data-table" id="all-vacations-table">
+                            <thead>
+                                <tr>
+                                    <th>رقم الطلب</th>
+                                    <th>الموظف</th>
+                                    <th>القسم</th>
+                                    <th>نوع الإجازة</th>
+                                    <th>تاريخ البداية</th>
+                                    <th>تاريخ النهاية</th>
+                                    <th>المدة</th>
+                                    <th>الحالة</th>
+                                    <th>تاريخ الطلب</th>
+                                    <th>الإجراءات</th>
+                                </tr>
+                            </thead>
+                            <tbody>
+                                <!-- سيتم ملء هذا الجدول بواسطة JavaScript -->
+                            </tbody>
+                        </table>
+                    </div>
+                </div>
+            </div>
+        </div>
+
+        <!-- تذييل الصفحة -->
+        <div class="footer">
+            <p>جميع الحقوق محفوظة &copy; 2025 - نظام إدارة الموظفين</p>
+        </div>
+    </div>
+
+    <!-- نموذج عرض تفاصيل الإجازة -->
+    <div class="modal" id="view-vacation-modal">
+        <div class="modal-content">
+            <div class="modal-header">
+                <h3>تفاصيل الإجازة</h3>
+                <button class="modal-close"><i class="fas fa-times"></i></button>
+            </div>
+            <div class="modal-body">
+                <div class="vacation-details">
+                    <div class="vacation-status">
+                        <span id="vacation-status-badge" class="status-badge">قيد الانتظار</span>
+                    </div>
+                    <h2 id="vacation-employee-name" class="animate-fade-in">اسم الموظف</h2>
+                    <div class="info-grid">
+                        <div class="info-item animate-slide-right delay-100">
+                            <span class="info-label">رقم الطلب:</span>
+                            <span id="vacation-id" class="info-value">1001</span>
+                        </div>
+                        <div class="info-item animate-slide-right delay-200">
+                            <span class="info-label">القسم:</span>
+                            <span id="vacation-department" class="info-value">قسم تكنولوجيا المعلومات</span>
+                        </div>
+                        <div class="info-item animate-slide-right delay-300">
+                            <span class="info-label">نوع الإجازة:</span>
+                            <span id="vacation-type-display" class="info-value">إجازة سنوية</span>
+                        </div>
+                        <div class="info-item animate-slide-right delay-400">
+                            <span class="info-label">تاريخ البداية:</span>
+                            <span id="vacation-start-date" class="info-value">2025/05/15</span>
+                        </div>
+                        <div class="info-item animate-slide-right delay-500">
+                            <span class="info-label">تاريخ النهاية:</span>
+                            <span id="vacation-end-date" class="info-value">2025/05/20</span>
+                        </div>
+                        <div class="info-item animate-slide-right delay-600">
+                            <span class="info-label">المدة:</span>
+                            <span id="vacation-duration" class="info-value">5 أيام</span>
+                        </div>
+                        <div class="info-item animate-slide-right delay-700">
+                            <span class="info-label">تاريخ العودة:</span>
+                            <span id="vacation-return-date" class="info-value">2025/05/21</span>
+                        </div>
+                        <div class="info-item animate-slide-right delay-800">
+                            <span class="info-label">تاريخ الطلب:</span>
+                            <span id="vacation-request-date" class="info-value">2025/05/01</span>
+                        </div>
+                        <div class="info-item full-width animate-slide-right delay-900">
+                            <span class="info-label">سبب الإجازة:</span>
+                            <span id="vacation-reason-display" class="info-value">سبب الإجازة يظهر هنا</span>
+                        </div>
+                        <div class="info-item full-width animate-slide-right delay-1000">
+                            <span class="info-label">معلومات الاتصال:</span>
+                            <span id="vacation-contact" class="info-value">معلومات الاتصال تظهر هنا</span>
+                        </div>
+                        <div id="approval-info" class="info-item full-width animate-slide-right delay-1100">
+                            <span class="info-label">معلومات الموافقة:</span>
+                            <span id="vacation-approval-info" class="info-value">تمت الموافقة بواسطة المدير بتاريخ 2025/05/02</span>
+                        </div>
+                        <div id="rejection-info" class="info-item full-width animate-slide-right delay-1100">
+                            <span class="info-label">سبب الرفض:</span>
+                            <span id="vacation-rejection-reason" class="info-value">سبب الرفض يظهر هنا</span>
+                        </div>
+                        <div id="attachment-info" class="info-item full-width animate-slide-right delay-1200">
+                            <span class="info-label">المرفقات:</span>
+                            <div id="vacation-attachment" class="attachment-preview">
+                                <a href="#" class="attachment-link" target="_blank">
+                                    <i class="fas fa-file-medical"></i> عرض المرفق
+                                </a>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            </div>
+            <div class="modal-footer" id="vacation-actions">
+                <button id="approve-vacation-btn" class="btn btn-success animate-fade-in delay-1300">
+                    <i class="fas fa-check"></i> موافقة
+                </button>
+                <button id="reject-vacation-btn" class="btn btn-danger animate-fade-in delay-1300">
+                    <i class="fas fa-times"></i> رفض
+                </button>
+                <button id="cancel-vacation-btn" class="btn btn-warning animate-fade-in delay-1300">
+                    <i class="fas fa-ban"></i> إلغاء الطلب
+                </button>
+                <button class="btn btn-secondary modal-close-btn animate-fade-in delay-1300">
+                    <i class="fas fa-times"></i> إغلاق
+                </button>
+            </div>
+        </div>
+    </div>
+
+    <!-- نموذج رفض الإجازة -->
+    <div class="modal" id="reject-vacation-modal">
+        <div class="modal-content">
+            <div class="modal-header">
+                <h3>رفض طلب الإجازة</h3>
+                <button class="modal-close"><i class="fas fa-times"></i></button>
+            </div>
+            <div class="modal-body">
+                <p>أنت على وشك رفض طلب الإجازة رقم <span id="reject-vacation-id"></span> للموظف <span id="reject-employee-name"></span>.</p>
+                <div class="form-group">
+                    <label for="rejection-reason">سبب الرفض <span class="required">*</span></label>
+                    <textarea id="rejection-reason" rows="3" placeholder="يرجى ذكر سبب رفض طلب الإجازة" required></textarea>
+                </div>
+            </div>
+            <div class="modal-footer">
+                <button id="confirm-reject-btn" class="btn btn-danger">
+                    <i class="fas fa-times"></i> تأكيد الرفض
+                </button>
+                <button class="btn btn-secondary modal-close-btn">
+                    <i class="fas fa-times"></i> إلغاء
+                </button>
+            </div>
+        </div>
+    </div>
+
+    <!-- نموذج إلغاء الإجازة -->
+    <div class="modal" id="cancel-vacation-modal">
+        <div class="modal-content">
+            <div class="modal-header">
+                <h3>إلغاء طلب الإجازة</h3>
+                <button class="modal-close"><i class="fas fa-times"></i></button>
+            </div>
+            <div class="modal-body">
+                <p>أنت على وشك إلغاء طلب الإجازة رقم <span id="cancel-vacation-id"></span>.</p>
+                <p>هل أنت متأكد من رغبتك في إلغاء هذا الطلب؟</p>
+            </div>
+            <div class="modal-footer">
+                <button id="confirm-cancel-btn" class="btn btn-warning">
+                    <i class="fas fa-ban"></i> تأكيد الإلغاء
+                </button>
+                <button class="btn btn-secondary modal-close-btn">
+                    <i class="fas fa-times"></i> تراجع
+                </button>
+            </div>
+        </div>
+    </div>
+
+    <!-- سكريبت قاعدة البيانات -->
+    <script src="js/database.js"></script>
+    <!-- سكريبت إدارة الإجازات -->
+    <script src="js/vacations.js"></script>
+</body>
+</html>

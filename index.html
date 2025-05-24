@@ -1,0 +1,266 @@
+<!DOCTYPE html>
+<html lang="ar" dir="rtl">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>نظام إدارة الموظفين</title>
+    <link rel="stylesheet" href="css/styles.css">
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.0.0/css/all.min.css">
+</head>
+<body>
+    <!-- القائمة الجانبية -->
+    <div class="sidebar">
+        <div class="sidebar-header">
+            <h2>نظام إدارة الموظفين</h2>
+        </div>
+        <div class="sidebar-menu">
+            <ul>
+                <li class="active"><a href="index.html"><i class="fas fa-home"></i> الرئيسية</a></li>
+                <li><a href="employees.html"><i class="fas fa-users"></i> الموظفين</a></li>
+                <li><a href="departments.html"><i class="fas fa-building"></i> الأقسام</a></li>
+                <li><a href="job-titles.html"><i class="fas fa-briefcase"></i> المسميات الوظيفية</a></li>
+                <li><a href="reports.html"><i class="fas fa-chart-bar"></i> التقارير</a></li>
+                <li><a href="settings.html"><i class="fas fa-cog"></i> الإعدادات</a></li>
+            </ul>
+        </div>
+    </div>
+
+    <!-- المحتوى الرئيسي -->
+    <div class="main-content">
+        <!-- شريط العنوان -->
+        <div class="header">
+            <div class="header-left">
+                <button id="sidebar-toggle" class="sidebar-toggle">
+                    <i class="fas fa-bars"></i>
+                </button>
+                <h2>لوحة التحكم</h2>
+            </div>
+            <div class="header-right">
+                <div class="user-info">
+                    <span id="userGreeting">مرحباً، </span>
+                    <button id="logoutBtn" class="logout-btn"><i class="fas fa-sign-out-alt"></i> تسجيل الخروج</button>
+                </div>
+            </div>
+        </div>
+
+        <!-- محتوى الصفحة -->
+        <div class="content">
+            <div class="dashboard">
+                <!-- البطاقات الإحصائية -->
+                <div class="stats-cards">
+                    <div class="card">
+                        <div class="card-icon bg-primary">
+                            <i class="fas fa-users"></i>
+                        </div>
+                        <div class="card-info">
+                            <h3>إجمالي الموظفين</h3>
+                            <h2 id="total-employees">0</h2>
+                        </div>
+                    </div>
+                    <div class="card">
+                        <div class="card-icon bg-success">
+                            <i class="fas fa-user-check"></i>
+                        </div>
+                        <div class="card-info">
+                            <h3>الموظفين النشطين</h3>
+                            <h2 id="active-employees">0</h2>
+                        </div>
+                    </div>
+                    <div class="card">
+                        <div class="card-icon bg-warning">
+                            <i class="fas fa-building"></i>
+                        </div>
+                        <div class="card-info">
+                            <h3>الأقسام</h3>
+                            <h2 id="total-departments">0</h2>
+                        </div>
+                    </div>
+                    <div class="card">
+                        <div class="card-icon bg-info">
+                            <i class="fas fa-money-bill-wave"></i>
+                        </div>
+                        <div class="card-info">
+                            <h3>متوسط الرواتب</h3>
+                            <h2 id="average-salary">0</h2>
+                        </div>
+                    </div>
+                </div>
+
+                <!-- الأقسام الرئيسية -->
+                <div class="dashboard-sections">
+                    <!-- قسم الموظفين الجدد -->
+                    <div class="section">
+                        <div class="section-header">
+                            <h3>آخر الموظفين المضافين</h3>
+                            <a href="employees.html" class="view-all">عرض الكل</a>
+                        </div>
+                        <div class="section-body">
+                            <table class="data-table" id="recent-employees-table">
+                                <thead>
+                                    <tr>
+                                        <th>الاسم</th>
+                                        <th>القسم</th>
+                                        <th>المسمى الوظيفي</th>
+                                        <th>تاريخ التعيين</th>
+                                    </tr>
+                                </thead>
+                                <tbody>
+                                    <!-- سيتم ملء هذا الجدول بواسطة JavaScript -->
+                                </tbody>
+                            </table>
+                        </div>
+                    </div>
+
+                    <!-- قسم توزيع الموظفين حسب القسم -->
+                    <div class="section">
+                        <div class="section-header">
+                            <h3>توزيع الموظفين حسب القسم</h3>
+                            <a href="reports.html" class="view-all">عرض التقارير</a>
+                        </div>
+                        <div class="section-body">
+                            <div class="chart-container">
+                                <canvas id="departments-chart"></canvas>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+
+                <!-- الإجراءات السريعة -->
+                <div class="quick-actions">
+                    <div class="section-header">
+                        <h3>إجراءات سريعة</h3>
+                    </div>
+                    <div class="actions-buttons">
+                        <a href="add-employee.html" class="btn btn-primary">
+                            <i class="fas fa-user-plus"></i>
+                            إضافة موظف جديد
+                        </a>
+                        <a href="search.html" class="btn btn-info">
+                            <i class="fas fa-search"></i>
+                            البحث عن موظف
+                        </a>
+                        <a href="reports.html" class="btn btn-success">
+                            <i class="fas fa-file-alt"></i>
+                            إنشاء تقرير
+                        </a>
+                        <a href="departments.html" class="btn btn-warning">
+                            <i class="fas fa-building"></i>
+                            إدارة الأقسام
+                        </a>
+                    </div>
+                </div>
+            </div>
+        </div>
+
+        <!-- تذييل الصفحة -->
+        <div class="footer">
+            <p>جميع الحقوق محفوظة &copy; 2025 - نظام إدارة الموظفين</p>
+        </div>
+    </div>
+
+    <!-- سكريبت Chart.js للرسوم البيانية -->
+    <script src="https://cdn.jsdelivr.net/npm/chart.js"></script>
+    <!-- سكريبت قاعدة البيانات -->
+    <script src="js/database.js"></script>
+    <!-- سكريبت الأدوات المساعدة -->
+    <script src="js/utils.js"></script>
+    <!-- سكريبت الصفحة الرئيسية -->
+    <script src="js/dashboard.js"></script>
+    <script>
+        document.addEventListener('DOMContentLoaded', async () => {
+            // التحقق من الجلسة
+            if (!checkSession()) {
+                return;
+            }
+
+            // تهيئة البيانات
+            await initializeData();
+
+            // تحديث معلومات المستخدم
+            const currentUser = JSON.parse(localStorage.getItem('currentUser'));
+            const userGreeting = document.getElementById('userGreeting');
+            userGreeting.textContent = `مرحباً، ${currentUser.username}`;
+
+            // معالجة تسجيل الخروج
+            const logoutBtn = document.getElementById('logoutBtn');
+            logoutBtn.addEventListener('click', () => {
+                localStorage.removeItem('currentUser');
+                window.location.href = 'login.html';
+            });
+
+            try {
+                // تحديث الإحصائيات
+                const employees = getFromLocalStorage('employees') || [];
+                const departments = getFromLocalStorage('departments') || [];
+
+                // إجمالي الموظفين
+                document.getElementById('total-employees').textContent = employees.length;
+
+                // الموظفين النشطين
+                const activeEmployees = employees.filter(e => e.isActive).length;
+                document.getElementById('active-employees').textContent = activeEmployees;
+
+                // عدد الأقسام
+                document.getElementById('total-departments').textContent = departments.length;
+
+                // متوسط الرواتب
+                const avgSalary = employees.length > 0
+                    ? Math.round(employees.reduce((sum, e) => sum + e.salary, 0) / employees.length)
+                    : 0;
+                document.getElementById('average-salary').textContent = avgSalary.toLocaleString();
+
+                // تحديث جدول آخر الموظفين
+                const recentEmployees = employees
+                    .sort((a, b) => new Date(b.createdDate) - new Date(a.createdDate))
+                    .slice(0, 5);
+
+                const tbody = document.querySelector('#recent-employees-table tbody');
+                tbody.innerHTML = recentEmployees.map(employee => `
+                    <tr>
+                        <td>${employee.firstName} ${employee.lastName}</td>
+                        <td>${departments.find(d => d.id === employee.departmentID)?.name || '-'}</td>
+                        <td>${getFromLocalStorage('jobTitles').find(j => j.id === employee.jobTitleID)?.title || '-'}</td>
+                        <td>${new Date(employee.hireDate).toLocaleDateString('ar-SA')}</td>
+                    </tr>
+                `).join('');
+
+                // إنشاء الرسم البياني
+                const ctx = document.getElementById('departments-chart').getContext('2d');
+                const departmentData = departments.map(dept => ({
+                    name: dept.name,
+                    count: employees.filter(emp => emp.departmentID === dept.id).length
+                }));
+
+                new Chart(ctx, {
+                    type: 'pie',
+                    data: {
+                        labels: departmentData.map(d => d.name),
+                        datasets: [{
+                            data: departmentData.map(d => d.count),
+                            backgroundColor: [
+                                '#3b82f6',
+                                '#10b981',
+                                '#f59e0b',
+                                '#ef4444',
+                                '#8b5cf6',
+                                '#ec4899'
+                            ]
+                        }]
+                    },
+                    options: {
+                        responsive: true,
+                        plugins: {
+                            legend: {
+                                position: 'bottom'
+                            }
+                        }
+                    }
+                });
+
+            } catch (error) {
+                handleError(error, 'حدث خطأ أثناء تحميل البيانات');
+            }
+        });
+    </script>
+</body>
+</html>

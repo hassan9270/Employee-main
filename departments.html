@@ -1,0 +1,183 @@
+<!DOCTYPE html>
+<html lang="ar" dir="rtl">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>إدارة الموظفين - الأقسام</title>
+    <link rel="stylesheet" href="css/styles.css">
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.0.0/css/all.min.css">
+</head>
+<body>
+    <!-- القائمة الجانبية -->
+    <div class="sidebar">
+        <div class="sidebar-header">
+            <h2>نظام إدارة الموظفين</h2>
+        </div>
+        <div class="sidebar-menu">
+            <ul>
+                <li><a href="index.html"><i class="fas fa-home"></i> الرئيسية</a></li>
+                <li><a href="employees.html"><i class="fas fa-users"></i> الموظفين</a></li>
+                <li class="active"><a href="departments.html"><i class="fas fa-building"></i> الأقسام</a></li>
+                <li><a href="job-titles.html"><i class="fas fa-briefcase"></i> المسميات الوظيفية</a></li>
+                <li><a href="reports.html"><i class="fas fa-chart-bar"></i> التقارير</a></li>
+                <li><a href="settings.html"><i class="fas fa-cog"></i> الإعدادات</a></li>
+            </ul>
+        </div>
+    </div>
+
+    <!-- المحتوى الرئيسي -->
+    <div class="main-content">
+        <!-- شريط العنوان -->
+        <div class="header">
+            <div class="header-left">
+                <button id="sidebar-toggle" class="sidebar-toggle">
+                    <i class="fas fa-bars"></i>
+                </button>
+                <h2>إدارة الأقسام</h2>
+            </div>
+            <div class="header-right">
+                <div class="user-info">
+                    <span>مرحباً، المدير</span>
+                    <a href="#" class="logout-btn"><i class="fas fa-sign-out-alt"></i> تسجيل الخروج</a>
+                </div>
+            </div>
+        </div>
+
+        <!-- محتوى الصفحة -->
+        <div class="content">
+            <!-- أدوات التحكم -->
+            <div class="control-panel">
+                <div class="search-box">
+                    <input type="text" id="search-input" placeholder="البحث عن قسم...">
+                    <button id="search-btn" class="btn btn-primary">
+                        <i class="fas fa-search"></i> بحث
+                    </button>
+                </div>
+                <div class="action-buttons">
+                    <button id="add-department-btn" class="btn btn-success">
+                        <i class="fas fa-plus"></i> إضافة قسم جديد
+                    </button>
+                </div>
+            </div>
+
+            <!-- جدول الأقسام -->
+            <div class="data-container">
+                <div class="section-header">
+                    <h3>قائمة الأقسام</h3>
+                </div>
+                <div class="table-responsive">
+                    <table class="data-table" id="departments-table">
+                        <thead>
+                            <tr>
+                                <th>الرقم</th>
+                                <th>اسم القسم</th>
+                                <th>الوصف</th>
+                                <th>عدد الموظفين</th>
+                                <th>تاريخ الإنشاء</th>
+                                <th>الإجراءات</th>
+                            </tr>
+                        </thead>
+                        <tbody>
+                            <!-- سيتم ملء هذا الجدول بواسطة JavaScript -->
+                        </tbody>
+                    </table>
+                </div>
+            </div>
+        </div>
+
+        <!-- تذييل الصفحة -->
+        <div class="footer">
+            <p>جميع الحقوق محفوظة &copy; 2025 - نظام إدارة الموظفين</p>
+        </div>
+    </div>
+
+    <!-- نموذج إضافة قسم جديد -->
+    <div class="modal" id="add-department-modal">
+        <div class="modal-content">
+            <div class="modal-header">
+                <h3>إضافة قسم جديد</h3>
+                <button class="modal-close"><i class="fas fa-times"></i></button>
+            </div>
+            <div class="modal-body">
+                <form id="add-department-form">
+                    <div class="form-group">
+                        <label for="department-name">اسم القسم <span class="required">*</span></label>
+                        <input type="text" id="department-name" name="name" required>
+                    </div>
+                    <div class="form-group">
+                        <label for="department-description">الوصف</label>
+                        <textarea id="department-description" name="description" rows="3"></textarea>
+                    </div>
+                </form>
+            </div>
+            <div class="modal-footer">
+                <button id="save-department-btn" class="btn btn-success">
+                    <i class="fas fa-save"></i> حفظ
+                </button>
+                <button class="btn btn-secondary modal-close-btn">
+                    <i class="fas fa-times"></i> إلغاء
+                </button>
+            </div>
+        </div>
+    </div>
+
+    <!-- نموذج تعديل قسم -->
+    <div class="modal" id="edit-department-modal">
+        <div class="modal-content">
+            <div class="modal-header">
+                <h3>تعديل القسم</h3>
+                <button class="modal-close"><i class="fas fa-times"></i></button>
+            </div>
+            <div class="modal-body">
+                <form id="edit-department-form">
+                    <input type="hidden" id="edit-department-id">
+                    <div class="form-group">
+                        <label for="edit-department-name">اسم القسم <span class="required">*</span></label>
+                        <input type="text" id="edit-department-name" name="name" required>
+                    </div>
+                    <div class="form-group">
+                        <label for="edit-department-description">الوصف</label>
+                        <textarea id="edit-department-description" name="description" rows="3"></textarea>
+                    </div>
+                </form>
+            </div>
+            <div class="modal-footer">
+                <button id="update-department-btn" class="btn btn-success">
+                    <i class="fas fa-save"></i> حفظ التغييرات
+                </button>
+                <button class="btn btn-secondary modal-close-btn">
+                    <i class="fas fa-times"></i> إلغاء
+                </button>
+            </div>
+        </div>
+    </div>
+
+    <!-- نموذج تأكيد الحذف -->
+    <div class="modal" id="delete-department-modal">
+        <div class="modal-content">
+            <div class="modal-header">
+                <h3>تأكيد الحذف</h3>
+                <button class="modal-close"><i class="fas fa-times"></i></button>
+            </div>
+            <div class="modal-body">
+                <p>هل أنت متأكد من رغبتك في حذف القسم "<span id="delete-department-name"></span>"؟</p>
+                <p class="warning">ملاحظة: سيتم حذف القسم نهائياً من قاعدة البيانات. تأكد من عدم وجود موظفين مرتبطين بهذا القسم قبل الحذف.</p>
+                <input type="hidden" id="delete-department-id">
+            </div>
+            <div class="modal-footer">
+                <button id="confirm-delete-btn" class="btn btn-danger">
+                    <i class="fas fa-trash"></i> تأكيد الحذف
+                </button>
+                <button class="btn btn-secondary modal-close-btn">
+                    <i class="fas fa-times"></i> إلغاء
+                </button>
+            </div>
+        </div>
+    </div>
+
+    <!-- سكريبت قاعدة البيانات -->
+    <script src="js/database.js"></script>
+    <!-- سكريبت إدارة الأقسام -->
+    <script src="js/departments.js"></script>
+</body>
+</html>

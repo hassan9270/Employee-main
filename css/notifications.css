@@ -1,0 +1,111 @@
+/* تنسيقات الإشعارات */
+#notifications-container {
+    position: fixed;
+    top: 20px;
+    left: 20px;
+    z-index: 9999;
+    display: flex;
+    flex-direction: column;
+    gap: 10px;
+    max-width: 350px;
+}
+
+.notification {
+    background-color: white;
+    border-radius: 8px;
+    box-shadow: 0 4px 12px rgba(0, 0, 0, 0.15);
+    padding: 15px;
+    display: flex;
+    align-items: center;
+    gap: 15px;
+    transform: translateX(-120%);
+    opacity: 0;
+    transition: all 0.3s ease;
+    position: relative;
+    overflow: hidden;
+}
+
+.notification::before {
+    content: '';
+    position: absolute;
+    top: 0;
+    right: 0;
+    height: 100%;
+    width: 4px;
+}
+
+.notification.notification-show {
+    transform: translateX(0);
+    opacity: 1;
+}
+
+.notification.notification-hide {
+    transform: translateX(-120%);
+    opacity: 0;
+}
+
+.notification-icon {
+    font-size: 1.5rem;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+}
+
+.notification-message {
+    flex: 1;
+    font-size: 0.95rem;
+}
+
+.notification-close {
+    background: none;
+    border: none;
+    cursor: pointer;
+    font-size: 0.9rem;
+    color: #777;
+    padding: 5px;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    transition: all 0.2s ease;
+}
+
+.notification-close:hover {
+    color: #333;
+    transform: scale(1.1);
+}
+
+/* نوع الإشعار: نجاح */
+.notification.success::before {
+    background-color: var(--success-color, #4caf50);
+}
+
+.notification.success .notification-icon {
+    color: var(--success-color, #4caf50);
+}
+
+/* نوع الإشعار: خطأ */
+.notification.error::before {
+    background-color: var(--danger-color, #f44336);
+}
+
+.notification.error .notification-icon {
+    color: var(--danger-color, #f44336);
+}
+
+/* نوع الإشعار: تحذير */
+.notification.warning::before {
+    background-color: var(--warning-color, #ff9800);
+}
+
+.notification.warning .notification-icon {
+    color: var(--warning-color, #ff9800);
+}
+
+/* نوع الإشعار: معلومات */
+.notification.info::before {
+    background-color: var(--info-color, #03a9f4);
+}
+
+.notification.info .notification-icon {
+    color: var(--info-color, #03a9f4);
+}
