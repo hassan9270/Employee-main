@@ -264,38 +264,140 @@ function setupEventListeners() {
     }
 }
 
-// تحميل قالب Excel
-function downloadTemplate() {
-    const template = {
-        SheetNames: ['الموظفين'],
-        Sheets: {
-            'الموظفين': {
-                '!ref': 'A1:R1',
-                A1: { v: 'الكود' },
-                B1: { v: 'الاسم الكامل' },
-                C1: { v: 'القسم' },
-                D1: { v: 'المسمى الوظيفي' },
-                E1: { v: 'تاريخ التعيين' },
-                F1: { v: 'تاريخ الميلاد' },
-                G1: { v: 'الحالة الاجتماعية' },
-                H1: { v: 'عدد الأبناء' },
-                I1: { v: 'الهاتف' },
-                J1: { v: 'العنوان' },
-                K1: { v: 'الرقم القومي' },
-                L1: { v: 'الرقم التأميني' },
-                M1: { v: 'رقم البطاقة الصحية' },
-                N1: { v: 'جهة التأمين' },
-                O1: { v: 'تاريخ التأمين' },
-                P1: { v: 'مهنة التأمين' },
-                Q1: { v: 'راتب التأمين' },
-                R1: { v: 'الراتب' }
-            }
+// تحميل قالب الاستيراد (النسخة المحسنة من employees.js)
+function downloadTemplate() { // Renamed from downloadImportTemplate
+    try {
+        // إنشاء مصفوفة البيانات
+        const data = [
+            [
+                'كود الموظف *',
+                'الاسم الكامل *',
+                'الإدارة *',
+                'الوظيفة *',
+                'المؤهل *',
+                'التليفون *',
+                'تاريخ الميلاد *',
+                'تاريخ التعيين *',
+                'الحالة الاجتماعية',
+                'عدد الأبناء',
+                'العنوان *',
+                'البريد الإلكتروني',
+                'الرقم القومي *',
+                'التأمين التكافلي',
+                'الرقم التأميني',
+                'جهة التأمين',
+                'رقم البطاقة الصحية',
+                'تاريخ التأمين',
+                'المهنة في التأمينات',
+                'ذوي الهمم',
+                'ملاحظات'
+            ],
+            [
+                'EMP001',
+                'أحمد محمد علي',
+                'قسم الموارد البشرية',
+                'موظف موارد بشرية',
+                'بكالوريوس',
+                '0501234567',
+                '1990-01-01',
+                '2024-01-01',
+                'متزوج',
+                '2',
+                'الرياض - حي النخيل',
+                'ahmed@example.com',
+                '1234567890',
+                'تأمين تكافلي',
+                '123456789',
+                'شركة التأمين الوطنية',
+                '987654321',
+                '2024-01-01',
+                'موظف',
+                'لا',
+                'ملاحظات إضافية'
+            ]
+        ];
+
+        // إنشاء مصفوفة جديدة
+        const ws = XLSX.utils.aoa_to_sheet(data);
+
+        // تنسيق العناوين
+        const range = XLSX.utils.decode_range(ws['!ref']);
+        for (let C = range.s.c; C <= range.e.c; ++C) {
+            const address = XLSX.utils.encode_cell({ r: 0, c: C });
+            if (!ws[address]) continue;
+            ws[address].s = {
+                font: { bold: true, color: { rgb: "FFFFFF" } },
+                fill: { fgColor: { rgb: "4F81BD" } },
+                alignment: { horizontal: "center", vertical: "center" }
+            };
         }
-    };
-    
-    const wb = XLSX.utils.book_new();
-    XLSX.utils.book_append_sheet(wb, template.Sheets['الموظفين'], 'الموظفين');
-    XLSX.writeFile(wb, 'قالب_بيانات_الموظفين.xlsx');
+
+        // تنسيق الصف الثاني (المثال)
+        for (let C = range.s.c; C <= range.e.c; ++C) {
+            const address = XLSX.utils.encode_cell({ r: 1, c: C });
+            if (!ws[address]) continue;
+            ws[address].s = {
+                font: { color: { rgb: "666666" } },
+                alignment: { horizontal: "right" }
+            };
+        }
+
+        // تعيين عرض الأعمدة
+        const colWidths = [
+            { wch: 15 }, // كود الموظف
+            { wch: 25 }, // الاسم الكامل
+            { wch: 25 }, // الإدارة
+            { wch: 25 }, // الوظيفة
+            { wch: 20 }, // المؤهل
+            { wch: 15 }, // التليفون
+            { wch: 15 }, // تاريخ الميلاد
+            { wch: 15 }, // تاريخ التعيين
+            { wch: 20 }, // الحالة الاجتماعية
+            { wch: 15 }, // عدد الأبناء
+            { wch: 30 }, // العنوان
+            { wch: 25 }, // البريد الإلكتروني
+            { wch: 15 }, // الرقم القومي
+            { wch: 20 }, // التأمين التكافلي
+            { wch: 15 }, // الرقم التأميني
+            { wch: 20 }, // جهة التأمين
+            { wch: 15 }, // رقم البطاقة الصحية
+            { wch: 15 }, // تاريخ التأمين
+            { wch: 20 }, // المهنة في التأمينات
+            { wch: 15 }, // ذوي الهمم
+            { wch: 30 }  // ملاحظات
+        ];
+        ws['!cols'] = colWidths;
+
+        // إضافة تعليمات الاستخدام
+        const instructions = [
+            ['تعليمات الاستخدام:'],
+            ['1. الحقول المطلوبة مميزة بعلامة *'],
+            ['2. يجب ملء جميع الحقول المطلوبة'],
+            ['3. يجب أن يكون الرقم القومي 10 أرقام'],
+            ['4. يجب أن يكون رقم الهاتف بصيغة صحيحة (مثال: 0501234567)'],
+            ['5. يجب أن يكون البريد الإلكتروني بصيغة صحيحة'],
+            ['6. يجب أن يكون التاريخ بصيغة YYYY-MM-DD'],
+            ['7. ذوي الهمم يجب أن تكون: نعم، لا'],
+            ['8. التأمين التكافلي يمكن إدخاله كنص حر']
+        ];
+
+        // إضافة التعليمات إلى الملف
+        const wsInstructions = XLSX.utils.aoa_to_sheet(instructions);
+        wsInstructions['!cols'] = [{ wch: 50 }];
+
+        // إنشاء مصفوفة جديدة
+        const wb = XLSX.utils.book_new();
+        XLSX.utils.book_append_sheet(wb, ws, 'قالب استيراد الموظفين');
+        XLSX.utils.book_append_sheet(wb, wsInstructions, 'تعليمات الاستخدام');
+
+        // تحميل الملف
+        XLSX.writeFile(wb, 'قالب_استيراد_الموظفين.xlsx');
+        showNotification('تم تحميل قالب الاستيراد بنجاح', 'success'); // Assumes showNotification is available
+
+    } catch (error) {
+        console.error('خطأ في تحميل قالب الاستيراد:', error);
+        showNotification('حدث خطأ أثناء تحميل قالب الاستيراد', 'error'); // Assumes showNotification is available
+    }
 }
 
 // معالجة اختيار الملف
