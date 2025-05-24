@@ -58,7 +58,7 @@ function generateEmployeeCode() {
 // تهيئة معالجات الأحداث
 function initializeEventHandlers() {
     // معالجة تقديم النموذج
-    document.getElementById('employeeForm').addEventListener('submit', handleFormSubmit);
+    document.getElementById('add-employee-form').addEventListener('submit', handleFormSubmit);
     
     // معالجة تاريخ التعيين
     document.getElementById('hireDate').addEventListener('change', function() {
@@ -110,7 +110,7 @@ function handleFormSubmit(event) {
     };
     
     // حفظ البيانات
-    saveEmployee(formData);
+    addEmployee(formData);
     
     // عرض رسالة نجاح
     showNotification('تم إضافة الموظف بنجاح', 'success');
